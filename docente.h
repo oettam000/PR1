@@ -28,10 +28,12 @@ int Adadi();//questa funzione ci da come valore di ritorno il valore di ogni dad
 int Bdadi();//questa funzione ci da come valore di ritorno il valore di ogni dado e questo dipende dal numero di armate con qui decidiamo di attaccare o difendere
 int generazione_giocatori();//questa funzione mi deve restituire solo i giocatori
 int generazione_mazzo();//questa funzione genera il mazzo e lo distribuisce a i giocatori giocanti
-int generazione_terreni(struct giocatore *G,int a,struct Lista *MAZZO);//questo prototipo di funzione mi fa mettere le truppe al interno dei territori prima della partita edeve farmeli mettere massimo 3 alla volta
-int Fase_principale(struct giocatore *G,    int a,  int random);//questa e la fase principale del gioco
-int attacco();
-void truppe(struct giocatore *G, int b);//questa funzione aumenta il numero delle truppe del giocatore fino ad arrivare al numero massimo consentito
-void spostamento_truppe(struct giocatore *G, int a,struct tabellone *T);
+int fase_pre_gioco(struct giocatore *,int ,struct Lista *);//questo prototipo di funzione mi fa mettere le truppe al interno dei territori prima della partita edeve farmeli mettere massimo 3 alla volta
+int Fase_principale(struct giocatore *,int ,struct tabellone *);//questa e la fase principale del gioco
+int attacco(struct giocatore *,int,struct tabellone*);
+void truppe(struct giocatore *, int );//questa funzione aumenta il numero delle truppe del giocatore fino ad arrivare al numero massimo consentito
+void spostamento_truppe(struct giocatore *, int ,struct tabellone *);
+void visualizza(struct Lista *);//visualizza le carte
+void vis(struct giocatore *);//visualizza le informazioni relative a i giocatori
 //fine prototipi di funzione
 #endif
