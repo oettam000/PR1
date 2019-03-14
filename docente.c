@@ -50,15 +50,16 @@ enum coloreD{rosso,blu};//questa enumerazione è per i dadi che mi dice i dadi d
 enum facolta{studi_umanistici,biologia_e_farmacia,ingegneria_e_architettura,scienze_merendine,medicina_chirurgia,scienze,nullo};//questa enumerazione ci serve per capire a quale dipartimento fanno capo le singole facolta
 
 
-struct giocatore {//struttura che definisce il giocatore in tutte le sue parti
+typedef struct {//struttura che definisce il giocatore in tutte le sue parti
     enum colore Colore;//questo mi serve per dare il valore del colore al singolo giocatore
     int ID;//valore identificativo del giocatore
     int Ncarte;//questo valore sta ad indicare il numero di carte che il giocatore ha in mano
     int numero_truppe;//questo valore ci fornisce il numero massimo di truppe che puo avere il giocatore quindi ogni volta che il giocatore prendera una truppa andremo a scalare il valore da questo numero
     int territori;//numero di territori appartenente al giocatore
     char Nome[DIM]; //nome corrispondente al giocatore stando al linguaggio del c 89/90 devono stare alla fine della struttura
-};//fine struttura giocatore
-
+}giocatore;//fine struttura giocatore
+giocatore G[6]={{ROSSO,0,0,0,0,"GENOVEFFA"},{NERO,1,0,0,0,"DAVIDE"},{VIOLA,2,0,0,0,"FABIOLA"},
+                {VERDE,3,0,0,0,"SOCRATE"},{GIALLO,4,0,0,0,"FRANCESCA"},{BLU,5,0,0,0,"FRANCESCO"}};//definisco un vettore di strutture statico e lo inizzializzo
 
 
 struct tabellone{//inizio struttura terreno
@@ -74,26 +75,17 @@ typedef struct {//inizio della struttura del mazzo
     enum simbolo Simbolo;//simbolo riportato nella carta
     enum facolta F;//enumerazione di ragruppamento per il dipartimento
     char Testo[DIM];//do la stezsa dimensione del nome da mettere nelle carte
-
-
 }mazzo;//fine della struttura del mazzo
 
-        mazzo M[28]={{0,vino,studi_umanistici,"Psicologia"},{1,birra,studi_umanistici,"filosofia"},{2,vino,studi_umanistici,"pedagogia"},{3,birra,studi_umanistici,"lettere"},{4,caffe,studi_umanistici,"lingue"},{5,vino,scienze_merendine,"economia"},{6,birra,scienze_merendine,"Scienze politiche"},{7,caffe,scienze_merendine,"Giurisprudenza"},
-                    {8,vino,medicina_chirurgia,"Odontoiatra"},{9,caffe,medicina_chirurgia,"Infermieristica"},{10,caffe,medicina_chirurgia,"Medicina"},{11,birra,medicina_chirurgia,"Scienze motorie"},{12,vino,biologia_e_farmacia,"CTF"},{13,caffe,biologia_e_farmacia,"tossicologia"},{14,birra,biologia_e_farmacia,"Biologia"},
-                    {15,caffe,biologia_e_farmacia,"Scienze della natura"},{16,vino,biologia_e_farmacia,"farmacia"},{17,caffe,ingegneria_e_architettura,"Ing,Chimica"},{18,birra,ingegneria_e_architettura,"Ing,Meccanica"},{19,caffe,ingegneria_e_architettura,"Ing,Elettronica"},{20,caffe,ingegneria_e_architettura,"Architettura"},
-                    {21,birra,ingegneria_e_architettura,"Ing,Civile"},{22,caffe,scienze,"Chimica"},{23,caffe,scienze,"Fisica"},{24,birra,scienze,"Informatica"},{25,caffe,scienze,"Matematica"},{26,jolly,nullo,"jolly"},{27,jolly,nullo,"jolly"}};
-
-
-struct dadi{//inizio della struttura dadi
-    int numeri[3];//vettore che deve contenere tutti i numeri delle giocate
-    enum coloreD colore;//valore che mi dice se i dadi e rossi o blu
-};//fine della struttura dadi
-
+mazzo M[28]={{0,vino,studi_umanistici,"Psicologia"},{1,birra,studi_umanistici,"filosofia"},{2,vino,studi_umanistici,"pedagogia"},{3,birra,studi_umanistici,"lettere"},{4,caffe,studi_umanistici,"lingue"},{5,vino,scienze_merendine,"economia"},{6,birra,scienze_merendine,"Scienze politiche"},{7,caffe,scienze_merendine,"Giurisprudenza"},
+            {8,vino,medicina_chirurgia,"Odontoiatra"},{9,caffe,medicina_chirurgia,"Infermieristica"},{10,caffe,medicina_chirurgia,"Medicina"},{11,birra,medicina_chirurgia,"Scienze motorie"},{12,vino,biologia_e_farmacia,"CTF"},{13,caffe,biologia_e_farmacia,"tossicologia"},{14,birra,biologia_e_farmacia,"Biologia"},
+            {15,caffe,biologia_e_farmacia,"Scienze della natura"},{16,vino,biologia_e_farmacia,"farmacia"},{17,caffe,ingegneria_e_architettura,"Ing,Chimica"},{18,birra,ingegneria_e_architettura,"Ing,Meccanica"},{19,caffe,ingegneria_e_architettura,"Ing,Elettronica"},{20,caffe,ingegneria_e_architettura,"Architettura"},
+            {21,birra,ingegneria_e_architettura,"Ing,Civile"},{22,caffe,scienze,"Chimica"},{23,caffe,scienze,"Fisica"},{24,birra,scienze,"Informatica"},{25,caffe,scienze,"Matematica"},{26,jolly,nullo,"jolly"},{27,jolly,nullo,"jolly"}};
 
 struct salvataggio{//questa struttura serve solo per il salvataggio
     int nGiocatori;//numero dei giocatori al momento del salvataggio
     int IDgiocatoreGiocante;//numero identificativo del giocatore
-    struct giocatore GIOCATORE;//richiamo alla struttura giocatore
+    giocatore GIOCATORE;//richiamo alla struttura giocatore
     int Vcarte[27];//vettore carte
     struct tabellone TABELLONE;//richiamo alla struttura tabellone
     mazzo MAZZO;//richiamo alla struttura mazzo
@@ -121,10 +113,16 @@ int Bdadi(){//dovro assegnare unn vettore per i dadi in modo che non mi creino p
     return Bdado;
 }//fine della funzione dei dadi in difesa
 /***************fine porzione relativa al lancio dei dadi******************/
+void gioca(){
+    int i;
+    for(i=0;i<GIOCATORI;i++) {
+        printf("%s\n", G[i].Nome);
+        printf("%d\n", G[i].ID);
+        printf("%d\n", G[i].numero_truppe);
+    }
+}
 
-int generazione_giocatori(){
-    struct giocatore G[6]={{ROSSO,0,0,0,0,"GENOVEFFA"},{NERO,1,0,0,0,"DAVIDE"},{VIOLA,2,0,0,0,"FABIOLA"},
-                            {VERDE,3,0,0,0,"SOCRATE"},{GIALLO,4,0,0,0,"FRANCESCA"},{BLU,5,0,0,0,"FRANCESCO"}};//definisco un vettore di strutture statico e lo inizzializzo
+void generazione_giocatori(){
     switch(GIOCATORI){
         case 3:
             G[0].numero_truppe=35;//cambio il valore delle truppe al inizio in modo che ogni volta non si abbia bisogno di vambiare il valore nel vettore statico
@@ -152,16 +150,15 @@ int generazione_giocatori(){
             G[4].numero_truppe=20;//cambio il valore delle truppe al inizio in modo che ogni volta non si abbia bisogno di vambiare il valore nel vettore statico
             G[5].numero_truppe=20;//cambio il valore delle truppe al inizio in modo che ogni volta non si abbia bisogno di vambiare il valore nel vettore statico
             break;
-        default:printf("hai sbagliato cambiando la variabile macro");//questo messaggio viene visualizzato solo quando si sbaglia a cambiare il valore macro delle impostazioni nel file docente.h
+        default:printf("hai sbagliato cambiando la variabile macro\n");//questo messaggio viene visualizzato solo quando si sbaglia a cambiare il valore macro delle impostazioni nel file docente.h
     }
     //adesso provero a fare una parte di codice che mi permette di assegnare il valore contenuto nella lista delle carte ad il valore id del giocatore
-    return G;//mi da come valore di ritorno la poarte di memoria relativa al vettore statico
     //mi da un altro errore che consiste nella richiamata come valore di ritorno di una valore che è contenuto solo nella variabile locale
     //devo sempre controllare il valore di ritorno di questa funzione perche potrebbe crearmi problemi in compilazione o a run-time
 
 }
 
-int generazione_mazzo(){//generazione della lista del mazzo
+struct Lista *generazione_mazzo(){//generazione della lista del mazzo
     struct Lista *MAZZO=NULL, *paus=NULL, *pausM=NULL,*primoM=NULL;//dichiarazione dei puntatori e dei puntatori ausiliari
     int i=0;//variabile che mi serve nel vor come contatore
     ///parte della creazione della lista
@@ -180,82 +177,133 @@ int generazione_mazzo(){//generazione della lista del mazzo
     //devo capire perche qua mi da un warning altrimenti potrebbe esserci un problema con il codice in fatto di compilazione
 }//fine della funzione
 
-void truppe(struct giocatore *G,int b){//questa funzione serve per vedere se il giocatore è arrivato al limite massimo delle sue truppe ossia 100
+void truppe(int b){//questa funzione serve per vedere se il giocatore è arrivato al limite massimo delle sue truppe ossia 100
     int aggiunta;//questo valore mi da la possibilita di icrementare il numero di truppe ad ogni turno
     if(G[b].numero_truppe<100){//controllo per l'aggiunta delle truppe del giocatore
         aggiunta=G[b].territori/3;//
         G[b].territori=G[b].territori+aggiunta;//con questa operazione incremento il numero delle truppe del giocatore
     }else{
-        printf("hai raggiunto il limite massimo delle truppe dora devi giostrartela bene ");//messaggio di ritorno al giocatore
+        printf("hai raggiunto il limite massimo delle truppe dora devi giostrartela bene\n ");//messaggio di ritorno al giocatore
     }
 }//fine funzione truppe
 
 
 
-int fase_pre_gioco(struct giocatore *G, int random,struct Lista *MAZZO){
+struct tabellone *fase_pre_gioco( int random,struct Lista *MAZZO) {
     struct tabellone *T;//sto inizializzando la struttura tabellone con il valore relativo ad ogni giocatore
-    T=(struct tabellone *)malloc(sizeof(struct tabellone));//alloco lo spazio per ogni spazio sul tabellone
-    int i,j=0;//variabile che mi serve per passare il valore del giocatore iniziale
-    int valoreT[GIOCATORI+1];//mi serve per eseguire un calcolo al indietro per il controllo delle truppe del giocatore durante l'assegnazione dei terreni
+    T = (struct tabellone *) malloc(sizeof(struct tabellone));//alloco lo spazio per ogni spazio sul tabellone
+    int i, j = 0;//variabile che mi serve per passare il valore del giocatore iniziale
+    int valoreT[GIOCATORI +
+                1];//mi serve per eseguire un calcolo al indietro per il controllo delle truppe del giocatore durante l'assegnazione dei terreni
     int scelta;
-    for(i=random;i<GIOCATORI;i++) {//con questo for asseggno ad ogni giocatore un tot di carte
+    for (i = random; i < GIOCATORI; i++) {//con questo for asseggno ad ogni giocatore un tot di carte
         if (i == GIOCATORI - 1) {//questo controllo lo fa ritornare sempre alla prima posizione del giocatore
             //ritorna sempre alla prima posizione
             T[j].Proprietario = i;//assegno il valore del proprietario al terreno
             T[j].Vterritorio = MAZZO[j].m.Numero;//assegno il valore del territorio in base al valore delle carte che sto distribuendo
             T[j].Armate = 0;//assegno alle armate presenti al interno del terreno il valore zero
-            strcpy(T[j].nome,MAZZO[j].m.Testo);//copio il testo della carta al interno del valore del tabellone
+            strcpy(T[j].nome, MAZZO[j].m.Testo);//copio il testo della carta al interno del valore del tabellone
+            valoreT[i] = 0;
             j++;//incremento la variabile altrimenti controllo solo la stessa parte di territorio e la stessa carta continuamente
             i = 0;//questo succede solo se il valore del for arriva alla fine del ciclo in modo che ritorni sempre a zero e rincominci
         } else {//fine del controllo
             T[j].Proprietario = i;//assegno il valore del proprietario al terreno
             T[j].Vterritorio = MAZZO[j].m.Numero;//assegno il valore del territorio in base al valore delle carte che sto distribuendo
             T[j].Armate = 0;//assegno alle armate presenti al interno del terreno il valore zero
-            strcpy(T[j].nome,MAZZO[j].m.Testo);//copio il testo della carta al interno del valore del tabellone
+            strcpy(T[j].nome, MAZZO[j].m.Testo);//copio il testo della carta al interno del valore del tabellone
             j++;//incremento il valore di j per andare avanti con il mazzo
-        }if (j == 26) {//controllo se j è uguale a il massimo valore del vettore del mazzo posso interrompere la compèutazxione di questo for
-                break;//forzo l'uscita dal ciclo
-            }//fine istruzione per uscire dal ciclo
-        }//fine else
+            valoreT[i] = 0;
+        }
+        if (j ==
+            26) {//controllo se j è uguale a il massimo valore del vettore del mazzo posso interrompere la compèutazxione di questo for
+            break;//forzo l'uscita dal ciclo
+        }//fine istruzione per uscire dal ciclo
+    }//fine else
     //fine primo ciclo for
-    for(j=0;j<26;j++) {
-        for (i = random; i <GIOCATORI; i++) {//questo lo devo fare fino a quando non hanno posizionato al interno del tabellone tutte le truppo
-            if (T[j].Proprietario == G[i].ID) {
-                if (valoreT !=G[i].numero_truppe) {//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
-                    printf("puoi ancora posizionare %d truppe sul tabellone prima del inizio del gioco ");//messaggio per vedere il numero delle truppe prima del inizio vero del gioco
-                    do {//mi permette di eseguire il ciclo almeno una volta
-                        printf("decidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta ");
-                        scanf("%d",&scelta);//questa scelta mi permette di assegnare un numero che va da 1 a 3 alle armate del terreno fino a quando il valore delle armate del giocatore non arriva a zero
-                        getchar();//mi serve per liberare il buffer daleventuale presa del tasto di invio
+    return T;
+}
+void schieramento(struct tabellone *T,int random ) {
+    int i, j;
+    int scelta;
+    int valoreT[GIOCATORI];
+    for (j = 0; j < 26; j++) {
+        for (i = random; i <GIOCATORI; i++){//questo lo devo fare fino a quando non hanno posizionato al interno del tabellone tutte le truppo
+            do {//mi permette di eseguire il ciclo almeno una volta
+                if (T[j].Proprietario == G[i].ID) {
+                    if (valoreT[i] !=G[i].numero_truppe) {//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                        printf("il terreno dove devi mettere le truppe e' :%s\n",T[j].nome);
+                        printf("puoi ancora posizionare %d truppe sul tabellone prima del inizio del gioco\n ",
+                               G[i].numero_truppe-valoreT[i]);//messaggio per vedere il numero delle truppe prima del inizio vero del gioco
+                        printf("decidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");
+                        scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
                         switch (scelta) {//inizio costrutto di scelta
                             case 1://se la scelta equivale a 1
                                 T[j].Armate++;//incremento il valore delle armate di uno
                                 valoreT[i]++;//incremento il valore della impostazione di controllo
                                 break;//istruzione che serve per terminare il costrutto switch
                             case 2://se la scelta ecquivale a 2
-                                T[j].Armate += 2;//incremento il valore delle armate di due
-                                valoreT[i]=+2;//incremento il valore della impostazione di controllo
+                                T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                                valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
                                 break;//istruzione che serve per terminare il costrutto switch
                             case 3:// se la scelta ecquivale a 3
-                                T[j].Armate += 3;//incremento il valore delle armate di tre
-                                valoreT[i]=+3;//incremento il valore della impostazione di controllo
+                                T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                                valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
                                 break;//istruzione che serve per terminare il costrutto switch
                             default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
-                                printf("hai inserito un valore non supportato riprova");//stampa a video il messaggio di errore
+                                printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
                         }//fine costrutto di scelta
+                    } else {
+                        printf("hai inserito tutte le truppe di cui disponevi\n ");//questo avviene solo quando si sono posizionate tutte le truppe al interno del tabellone
+                    }
 
-                    } while (scelta < 1 || scelta >3);//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
-                } else {
-                    printf("hai inserito tutte le truppe di cui disponevi ");//questo avviene solo quando si sono posizionate tutte le truppe al interno del tabellone
                 }
-            }else{
-                printf("prova per vedere se va avanti il codice  altrimenti devo rifare l'intera funzione ");
-                //potevo anche la sciar stare la stampa tanto non mi deve ritornare niente e solo per vedere dove si ferma e cosa succede
-            }//
-        }//questa e la fine del rando che cicla per ogni terreni
+            } while (scelta ==3||scelta==2||scelta==1);//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//questo valore di ritorno mi serve per tutto il gioco perche mi indica quale è il giocatore iniziale
+
+            if(i==GIOCATORI-1){//fa tornare il valore della conta dei giocatori a zero
+                i=0;//assegno il valore a zero
+            }
+            if(i==25){//fa tornare il valore della conta dei terreni a zero
+                j=0;
+            }switch(GIOCATORI) {
+    case 3:
+        if ((valoreT[0] == G[j].numero_truppe) && (valoreT[1] == G[j].numero_truppe) &&
+            (valoreT[2] == G[j].numero_truppe)) {
+            i = 26;
+            j = 6;
+        }
+        break;
+    case 4:
+        if ((valoreT[0] == G[j].numero_truppe) && (valoreT[1] == G[j].numero_truppe) &&
+            (valoreT[2] == G[j].numero_truppe) && (valoreT[3] == G[j].numero_truppe)) {
+            i = 26;
+            j = 6;
+        }
+        break;
+    case 5:
+        if ((valoreT[0] == G[j].numero_truppe) && (valoreT[1] == G[j].numero_truppe) &&
+            (valoreT[2] == G[j].numero_truppe) && (valoreT[3] == G[j].numero_truppe) &&
+            (valoreT[4] == G[j].numero_truppe)) {
+            i = 26;
+            j = 6;
+        }
+        break;
+    case 6:
+        if ((valoreT[0] == G[j].numero_truppe) && (valoreT[1] == G[j].numero_truppe) &&
+            (valoreT[2] == G[j].numero_truppe) && (valoreT[3] == G[j].numero_truppe) &&
+            (valoreT[4] == G[j].numero_truppe) && (valoreT[5] == G[j].numero_truppe)) {
+            i = 26;
+            j = 6;
+        }
+        break;
+}
+
+        }//fine del for
+
+
     }
-return T;//questo valore di ritorno mi serve per tutto il gioco perche mi indica quale è il giocatore iniziale
-}//fine della funzione
+}
+
 
 int Fase_principale(struct giocatore *G, int random,struct tabellone *T){//questa e la fase principale del progetto prende in ingresso la struttura giocatore e il valore generato random
     //fase iniziale del turno //
@@ -266,7 +314,7 @@ int Fase_principale(struct giocatore *G, int random,struct tabellone *T){//quest
         //truppe(G,i);//assegno delle truppe al giocatore
         if(i==GIOCATORI-1){//mi serve per azzerare il valore di controllo del for
             printf("è il turno del giocatore %d",i);
-            truppe(G,i);
+            truppe(i);
             printf("che cosa vuoi fare??");//stampa a video il messaggio
             printf("1)ATTACCARE");//stampa a video il messaggio
             printf("2)SPOSTARE TRUPPE");//stampa a video il messaggio
@@ -276,7 +324,7 @@ int Fase_principale(struct giocatore *G, int random,struct tabellone *T){//quest
             getchar();//svuoto il buffer ed evito che venga preso il valore di enter come prossimo paramentro in ingresso
             i=0;//viene riportato a zero quando arriva al massimo dei giocatori
         }else{//questo deve avvenire quasi sempre ammeno che non si verifichi la situazione del if
-            truppe(G,i);
+            truppe(i);
             printf("che cosa vuoi fare??");//stampa a video il messaggio
             printf("1)ATTACCARE");//stampa a video il messaggio
             printf("2)SPOSTARE TRUPPE");//stampa a video il messaggio
@@ -287,10 +335,10 @@ int Fase_principale(struct giocatore *G, int random,struct tabellone *T){//quest
         }
         do {
             switch (scelta) {//in base al numero che viene digitato fa succedere le diverse funzioni
-                case 1:attacco(G,i,T);//situazione in cui si digita il numero 1
+                case 1:attacco(i,T);//situazione in cui si digita il numero 1
                 //qua prendo in ingresso delle funzioni in modo da non dilungare il codice oltremodo
                     break;//interrompe la questa parte di codice e la fa uscire dal flusso
-                case 2:spostamento_truppe(G,i,T);//situazione in cui si digita il numero 2
+                case 2:spostamento_truppe(i,T);//situazione in cui si digita il numero 2
                     break;//interrompe la questa parte di codice e la fa uscire dal flusso
                 case 3://situazione in cui si digita il numero 3
                     break;//interrompe la questa parte di codice e la fa uscire dal flusso
@@ -306,7 +354,8 @@ int Fase_principale(struct giocatore *G, int random,struct tabellone *T){//quest
     }//fine for
 }//fine funzione principale
 
-int attacco(struct giocatore *G,int a,struct tabellone *T) {//questo è la funzione per l'attacco prende in ingresso il vettore giocatori piu il numero del attaccante e del difensore
+int attacco(int a,struct tabellone *T) {//questo è la funzione per l'attacco prende in ingresso il vettore giocatori piu il numero del attaccante e del difensore
+    giocatore *G;
     int scelta,sceltaD,sceltaT,sceltaT1, i,j;//variabili che mi  servono al interno della
     int D1[3], D2[3],D3; //dadi attacco, difesa ausiliari
     printf("scegli da quale dei tuoi terreni attaccare");
@@ -585,7 +634,8 @@ int attacco(struct giocatore *G,int a,struct tabellone *T) {//questo è la funzi
 }//fine della funzione di attacco
 
 
-void spostamento_truppe(struct giocatore *G, int a,struct tabellone *T){
+void spostamento_truppe(int a,struct tabellone *T){
+    giocatore *G;
     int i,b;//variabile che mi serve per il for
     int scelta,sceltaB,sceltaC;
     //devo stampare tutti i territori che ha il giocatore per poi spostare le truppe
