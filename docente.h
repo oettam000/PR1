@@ -10,7 +10,7 @@
 //inizio definizioni
 #define N_TERRITORI 26 //Number of territories
 #define DIM 26//questa ci definisce la grandezza massima che possiamo dare a i nomi
-#define GIOCATORI 3 //come chiesto nell progetto base creare una macro con il valore dei giocatori
+#define GIOCATORI 4 //come chiesto nell progetto base creare una macro con il valore dei giocatori
 //fine definizioni
 //inizio prototipi di funzione
 _Bool isAdjacent(int idFirst, int idSecond);
@@ -26,14 +26,19 @@ enum simbolo;//prototipo del enumerazione che ci definisce il simbolo al interno
 enum facolta;//prototipo di enumerazione che ci dice a quale dipartimento fanno capo le facolta
 int Adadi();//questa funzione ci da come valore di ritorno il valore di ogni dado e questo dipende dal numero di armate con qui decidiamo di attaccare o difendere
 int Bdadi();//questa funzione ci da come valore di ritorno il valore di ogni dado e questo dipende dal numero di armate con qui decidiamo di attaccare o difendere
-int generazione_giocatori();//questa funzione mi deve restituire solo i giocatori
-int generazione_mazzo();//questa funzione genera il mazzo e lo distribuisce a i giocatori giocanti
-int fase_pre_gioco(struct giocatore *,int ,struct Lista *);//questo prototipo di funzione mi fa mettere le truppe al interno dei territori prima della partita edeve farmeli mettere massimo 3 alla volta
+void generazione_giocatori();//questa funzione mi deve restituire solo i giocatori
+struct Lista *generazione_mazzo();//questa funzione genera il mazzo e lo distribuisce a i giocatori giocanti
+struct Lista *mescola(struct Lista *);//questa funzione mi serve solo per mescolare la lista
+struct tabellone *fase_pre_gioco(int ,struct Lista *);//questo prototipo di funzione mi fa mettere le truppe al interno dei territori prima della partita edeve farmeli mettere massimo 3 alla volta
+struct tabellone *Proprietario(struct tabellone *,int);//mi serve per dare il valore del proprietario al terreno
 int Fase_principale(struct giocatore *,int ,struct tabellone *);//questa e la fase principale del gioco
-int attacco(struct giocatore *,int,struct tabellone*);
-void truppe(struct giocatore *, int );//questa funzione aumenta il numero delle truppe del giocatore fino ad arrivare al numero massimo consentito
-void spostamento_truppe(struct giocatore *, int ,struct tabellone *);
+int attacco(int,struct tabellone*);//questa funzione esegue tutta la fase d'attacco
+void truppe(int );//questa funzione aumenta il numero delle truppe del giocatore fino ad arrivare al numero massimo consentito
+void spostamento_truppe(int ,struct tabellone *);//qusta funzione mi permette di avere lo spostamento tra le truppe
+void gioca();//mi da il valore dei giocatori e mi serviva solo in fase di debug per vedere se la creazione dei giocatori era corretta
+void schieramento(struct tabellone*,int);//funzioni inutilizzate sono state dichiarate ma mai utilizzare o cancellate
 void visualizza(struct Lista *);//visualizza le carte
-void vis(struct giocatore *);//visualizza le informazioni relative a i giocatori
+void tabelloneVIS(struct tabellone *);//visualizza le informazioni relative a i giocatori
+struct  Lista *aggiungi_elementi(struct Lista *);//questa funzione mi permette di inserire le ultime due carte al interno della lista
 //fine prototipi di funzione
 #endif
