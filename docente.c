@@ -74,14 +74,19 @@ typedef struct {//struttura che definisce il giocatore in tutte le sue parti
     int territori;//numero di territori appartenente al giocatore
     char Nome[DIM]; //nome corrispondente al giocatore stando al linguaggio del c 89/90 devono stare alla fine della struttura
 } giocatore;//fine struttura giocatore
-giocatore G[6] = {{ROSSO,  0, 0, 0, 0, "GENOVEFFA"},
-                  {NERO,   1, 0, 0, 0, "DAVIDE"},
-                  {VIOLA,  2, 0, 0, 0, "FABIOLA"},
-                  {VERDE,  3, 0, 0, 0, "SOCRATE"},
-                  {GIALLO, 4, 0, 0, 0, "FRANCESCA"},
-                  {BLU,    5, 0, 0, 0, "FRANCESCO"}};//definisco un vettore di strutture statico e lo inizzializzo
 
+giocatore G[6] = {{ROSSO,  0, 0, 0, 0,"GENOVEFFA"},
+                  {NERO,   1, 0, 0, 0,"DAVIDE"},
+                  {VIOLA,  2, 0, 0, 0,"FABIOLA"},
+                  {VERDE,  3, 0, 0, 0,"SOCRATE"},
+                  {GIALLO, 4, 0, 0, 0,"FRANCESCA"},
+                  {BLU,    5, 0, 0, 0,"FRANCESCO"}};//definisco un vettore di strutture statico e lo inizzializzo
 
+typedef struct{//quetsa struttura mi servve per il salvataggio delle carte al interno del file salvataggio.rsk
+    int ID;//id relativo al giocatore
+    int NCARTA;//valore della carta
+}carte;
+carte DECK[27];
 struct tabellone {//inizio struttura terreno
     int Vterritorio;//puo prendere valori che vanno da 0 a 25
     int Proprietario;//puo prendere valori che vanno da 0 a 5
@@ -92,44 +97,51 @@ struct tabellone {//inizio struttura terreno
 
 typedef struct {//inizio della struttura del mazzo
     int Numero;
+    int id;
     enum simbolo Simbolo;//simbolo riportato nella carta
     enum facolta F;//enumerazione di ragruppamento per il dipartimento
     char Testo[DIM];//do la stezsa dimensione del nome da mettere nelle carte
 } mazzo;//fine della struttura del mazzo
 
-mazzo M[28] = {{0,  vino,  studi_umanistici,          "Psicologia"},
-               {1,  birra, studi_umanistici,          "filosofia"},
-               {2,  vino,  studi_umanistici,          "pedagogia"},
-               {3,  birra, studi_umanistici,          "lettere"},
-               {4,  caffe, studi_umanistici,          "lingue"},
-               {5,  vino,  scienze_merendine,         "economia"},
-               {6,  birra, scienze_merendine,         "Scienze politiche"},
-               {7,  caffe, scienze_merendine,         "Giurisprudenza"},
-               {8,  vino,  medicina_chirurgia,        "Odontoiatra"},
-               {9,  caffe, medicina_chirurgia,        "Infermieristica"},
-               {10, caffe, medicina_chirurgia,        "Medicina"},
-               {11, birra, medicina_chirurgia,        "Scienze motorie"},
-               {12, vino,  biologia_e_farmacia,       "CTF"},
-               {13, caffe, biologia_e_farmacia,       "tossicologia"},
-               {14, birra, biologia_e_farmacia,       "Biologia"},
-               {15, caffe, biologia_e_farmacia,       "Scienze della natura"},
-               {16, vino,  biologia_e_farmacia,       "farmacia"},
-               {17, caffe, ingegneria_e_architettura, "Ing,Chimica"},
-               {18, birra, ingegneria_e_architettura, "Ing,Meccanica"},
-               {19, caffe, ingegneria_e_architettura, "Ing,Elettronica"},
-               {20, caffe, ingegneria_e_architettura, "Architettura"},
-               {21, birra, ingegneria_e_architettura, "Ing,Civile"},
-               {22, caffe, scienze,                   "Chimica"},
-               {23, caffe, scienze,                   "Fisica"},
-               {24, birra, scienze,                   "Informatica"},
-               {25, caffe, scienze,                   "Matematica"},
-               {26, jolly, nullo,                     "jolly"},
-               {27, jolly, nullo,                     "jolly"}};
+mazzo M[28] = {{0,0,  vino,  studi_umanistici,          "Psicologia"},
+               {1,0,  birra, studi_umanistici,          "filosofia"},
+               {2,0,  vino,  studi_umanistici,          "pedagogia"},
+               {3,0,  birra, studi_umanistici,          "lettere"},
+               {4,0,  caffe, studi_umanistici,          "lingue"},
+               {5,0,  vino,  scienze_merendine,         "economia"},
+               {6,0,  birra, scienze_merendine,         "Scienze politiche"},
+               {7,0,  caffe, scienze_merendine,         "Giurisprudenza"},
+               {8,0,  vino,  medicina_chirurgia,        "Odontoiatra"},
+               {9,0,  caffe, medicina_chirurgia,        "Infermieristica"},
+               {10,0, caffe, medicina_chirurgia,        "Medicina"},
+               {11,0, birra, medicina_chirurgia,        "Scienze motorie"},
+               {12,0, vino,  biologia_e_farmacia,       "CTF"},
+               {13,0, caffe, biologia_e_farmacia,       "tossicologia"},
+               {14,0, birra, biologia_e_farmacia,       "Biologia"},
+               {15,0, caffe, biologia_e_farmacia,       "Scienze della natura"},
+               {16,0, vino,  biologia_e_farmacia,       "farmacia"},
+               {17,0, caffe, ingegneria_e_architettura, "Ing,Chimica"},
+               {18,0, birra, ingegneria_e_architettura, "Ing,Meccanica"},
+               {19,0, caffe, ingegneria_e_architettura, "Ing,Elettronica"},
+               {20,0, caffe, ingegneria_e_architettura, "Architettura"},
+               {21,0, birra, ingegneria_e_architettura, "Ing,Civile"},
+               {22,0, caffe, scienze,                   "Chimica"},
+               {23,0, caffe, scienze,                   "Fisica"},
+               {24,0, birra, scienze,                   "Informatica"},
+               {25,0, caffe, scienze,                   "Matematica"},
+               {26,0, jolly, nullo,                     "jolly"},
+               {27,0, jolly, nullo,                     "jolly"}};
+
+typedef struct {
+    enum colore col;//richiamo l'enumerazione del colore
+    int numCarte;//il numero di carte che ha il giocatore
+    char Nome[DIM+1];//array che contiene il nome
+}GIOCsalvataggio;
 
 struct salvataggio {//questa struttura serve solo per il salvataggio
     int nGiocatori;//numero dei giocatori al momento del salvataggio
     int IDgiocatoreGiocante;//numero identificativo del giocatore
-    giocatore GIOCATORE;//richiamo alla struttura giocatore
+    GIOCsalvataggio GIOCATORE[GIOCATORI];//richiamo alla struttura giocatore
     int Vcarte[27];//vettore carte
     struct tabellone TABELLONE;//richiamo alla struttura tabellone
     mazzo MAZZO;//richiamo alla struttura mazzo
@@ -150,28 +162,27 @@ int Adadi() {//inizio funzione per la generazione dei numeri casuali tramite i d
     return Adado;
 }//fine della funzione dei dadi di attacco
 //devo generare un altra funzione che mi permette di vreare un lista o per qualcosa di simile per la il controllo delle infoemazioni sul terreno di gioco altrimenti non posso controllare le informazioni relative a i terreni
-int
-Bdadi() {//dovro assegnare unn vettore per i dadi in modo che non mi creino problemi altrimenti non so come passare i dati
+
+
+int Bdadi() {//dovro assegnare unn vettore per i dadi in modo che non mi creino problemi altrimenti non so come passare i dati
     srand(time(NULL));//inizializzazione del seed a zero
     int Bdado;
     Bdado = 1 + rand() % 6 - 1 + 1;//generazione del numero random per il dado con gli estremi compresi
     return Bdado;
 }//fine della funzione dei dadi in difesa
 /***************fine porzione relativa al lancio dei dadi******************/
-void
-gioca() {//semplice funzione di controllo che mi permette di capire quali sono i giocatori giocanti e la loro struttura
+
+
+void gioca() {//semplice funzione di controllo che mi permette di capire quali sono i giocatori giocanti e la loro struttura
     int i;//valore di i che mi serve per scorrere i giocatori
-    for (i = 0;
-         i < GIOCATORI; i++) {//semplice costrutto for che funziona da contatore e mi fa scorrere tutti i giocatori
+    for (i = 0;i < GIOCATORI; i++) {//semplice costrutto for che funziona da contatore e mi fa scorrere tutti i giocatori
         printf("%s\n", G[i].Nome);//stampo il nome del giocatore
-        printf("%d\n",
-               G[i].ID);//stampo l'id del giocatore che poi verra dato a i terreni per capire se siano loro o meno
+        printf("%d\n",G[i].ID);//stampo l'id del giocatore che poi verra dato a i terreni per capire se siano loro o meno
         printf("%d\n", G[i].numero_truppe);//il numero delle truppe che ha il giocatore
     }
 }
 
-void
-generazione_giocatori() {//questa funzione mi permette di definire il numero massimo assegnate al inizio del gioco a i giocatori che cambiera al variare degli stessi
+void generazione_giocatori() {//questa funzione mi permette di definire il numero massimo assegnate al inizio del gioco a i giocatori che cambiera al variare degli stessi
     switch (GIOCATORI) {
         case 3:
             G[0].numero_truppe = 35;//cambio il valore delle truppe al inizio in modo che ogni volta non si abbia bisogno di vambiare il valore nel vettore statico
@@ -248,15 +259,27 @@ struct Lista *mescola(struct Lista *MAZZO) {
     }
     return MAZZO;
 }
+struct Lista *Pesca(int b,int i,struct Lista *MAZZO){//questa funzione permette di pescare una carta a turno per il giocatore
+    struct Lista *primaCarta=NULL, *Pnext=NULL, *pLnext=NULL;
+    if(MAZZO==NULL){//controlla se il puntatore al mazzo è arrivata alla fine se e cosi stampa il messaggio eltrimenti esegue quello dopo
+        printf("sono finite le carte");//stampa il messaggio al giocatore
+    }else {
+        DECK[b].NCARTA = MAZZO->m.Numero;//assegno il numero della carta alla struttura carta
+        DECK[b].ID = G[i].ID;//assegno il valore del id del giocatore che pesca la carta alla struttura carta
+        primaCarta = MAZZO;//passo a primaCarta il primo elemento della lista
+        Pnext = MAZZO;//passo la testa della lista al puntatore pNxt per essere incrementato e permettermi di cancellare il primo elemento della lista corrente
+        MAZZO = Pnext->pnext;//passo avanti al prossimo elemento della lista
+        free(primaCarta);//elimino il primo elemento della lista
+    }
+    return MAZZO; //ritorno al puntatore a struttura
+};
 
-
-void
-truppe(int b) {//questa funzione serve per vedere se il giocatore è arrivato al limite massimo delle sue truppe ossia 100
+void truppe(int b) {//questa funzione serve per vedere se il giocatore è arrivato al limite massimo delle sue truppe ossia 100
     int aggiunta;//questo valore mi da la possibilita di icrementare il numero di truppe ad ogni turno
     if (G[b].numero_truppe < 100) {//controllo per l'aggiunta delle truppe del giocatore
         aggiunta = G[b].territori / 3;//
-        G[b].territori =
-                G[b].territori + aggiunta;//con questa operazione incremento il numero delle truppe del giocatore
+        G[b].numero_truppe=G[b].numero_truppe+aggiunta;//con questa operazione incremento il numero delle truppe del giocatore
+    printf("%d",G[b].territori);
     } else {
         printf("hai raggiunto il limite massimo delle truppe dora devi giostrartela bene\n ");//messaggio di ritorno al giocatore
     }
@@ -294,6 +317,7 @@ struct tabellone *Proprietario(struct tabellone *T, int random) {
     int j = random;
     do {
         T[i].Proprietario = j;
+        G[j].territori++;
         i++;
         j++;
         if (j >= GIOCATORI) {
@@ -312,40 +336,42 @@ void tabelloneVIS(struct tabellone *a) {//questa funzione mi serve per visualizz
         printf("\n%d\n", a[i].Vterritorio);
     }
 }
-
 void schieramento(struct tabellone *T, int random) {
-    int i, j, a;//variabili che mi servono per i cicli
+    int i, j, a,b,c,d;//variabili che mi servono per i cicli e contenitori vari
     int scelta;//variabile che mi serve per la scelta del giocatore
     int valoreT[GIOCATORI];//arrai per le truppe di ogni giocatore
-    for(i=0;i<GIOCATORI;i++){//mi serve solo per settare a zero il valore delle truppe per poi iniziare ad incrementare
-        valoreT[i]=0;
+    int flag=0;//variabile di supporto che mi serve per uscire dal ciclo do-while per farla funzionare in modo decente la sto inizializzando a 0
+    for(a=0;a<GIOCATORI;a++){//mi serve solo per settare a zero il valore delle truppe per poi iniziare ad incrementare
+        valoreT[a]=0;
     }
+    a=35;
+    b=30;
+    c=25;
+    d=20;
     i = random;//assegno al valore i il valore di random generato al interno del main
     j = 0;//assegno al valore j il valore zero//faccio partire il ciclo
     if (GIOCATORI == 3) {
         do {//mi permette di eseguire il ciclo almeno una volta
-            if (T[j].Proprietario ==
-                G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
-                if (valoreT[i] !=
-                    G[i].numero_truppe) {//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
-                    printf("il terreno dove devi mettere le truppe e' :%s\n",
-                           T[j].nome);//mi stampa il nome del territorio in questione
-                    printf("puoi ancora posizionare %d truppe sul tabellone prima del inizio del gioco\n ",//mi stampa il numero delle truppe rimanenti da piazzare
-                           G[i].numero_truppe -
-                           valoreT[i]);//messaggio per vedere il numero delle truppe prima del inizio vero del gioco
-                    printf("decidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
-                    scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
                     switch (scelta) {//inizio costrutto di scelta
                         case 1://se la scelta equivale a 1
-                            T[j].Armate++;//incremento il valore delle armate di uno
-                            valoreT[i]++;//incremento il valore della impostazione di controllo
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
                             j++;//incrementa il valore di j
                             i++;//incrementa il valore di j
-                            if (j == 25) {//controlla se il valore di j è arrivato a 25
-                                j = 0;//se e arrivato a 25 lo riporta a zero
+                            if(j==25){
+                                j=0;
                             }
-                            if (i == 5) {//controlla se il valore di i arriva a 5
-                                i = 0;//se arriva a 5 riporta il valore di i a 0
+                            if(i==GIOCATORI){
+                                i=0;
                             }
                             break;//istruzione che serve per terminare il costrutto switch
                         case 2://se la scelta ecquivale a 2
@@ -353,11 +379,11 @@ void schieramento(struct tabellone *T, int random) {
                             valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
                             j++;//incrementa il valore di j
                             i++;//incrementa il valore di i
-                            if (j == 25) {//controlla se il valore arriva a 25
-                                j = 0;//riporta il valore a zero
+                            if(j==25){
+                                j=0;
                             }
-                            if (i == 5) {//controlla se il valore di i arriva a 5
-                                i = 0;//se il valore di 5 arriva a 5 lo riporta a zero
+                            if(i==GIOCATORI){
+                                i=0;
                             }
                             break;//istruzione che serve per terminare il costrutto switch
                         case 3:// se la scelta ecquivale a 3
@@ -365,105 +391,252 @@ void schieramento(struct tabellone *T, int random) {
                             valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
                             j++;//incremento il valore di j
                             i++;//incremento il valore di i
-                            if (j == 25) {//controllo se j arriva a il valore di 25
-                                j = 0;//riporto il valore arrivato 25 a zero
+                            if(j==25){
+                                j=0;
                             }
-                            if (i == 5) {//controllo se il valore di i arriva a 5
-                                i = 0;//se il valore di i arriva a 5 lo riporto a zero
+                            if(i==GIOCATORI){
+                                i=0;
                             }
                             break;//istruzione che serve per terminare il costrutto switch
                         default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
                             printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
                     }//fine costrutto di scelta
-                } else {//questo else viene avviato solo se si sbaglia l'inserimento del valore che dobbiamo immettere
-                    printf("hai inserito tutte le truppe di cui disponevi\n ");//questo avviene solo quando si sono posizionate tutte le truppe al interno del tabellone
-                }
 
-            } else {//questo else avviene solo se quando non abbiamo trovato una corrispondenza con il valore id del giocatore quindi ci manda avanti il valore di una posizione
-                j++;//incrementa il valore di j
-                if (j == 25) {//controlla che il valore sia uguale a 25
-                    j = 0;//riporta il valore a zero
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 25) {
+                    j = 0;
                 }
             }
-        } while ((valoreT[0] == G[0].numero_truppe) && (valoreT[1] == G[1].numero_truppe) && (valoreT[2] ==
-                                                                                              G[2].numero_truppe));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+
+        }while ((valoreT[0]<a)&&(valoreT[1]<a)&&(valoreT[2]<a));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+        do {//mi permette di eseguire il ciclo almeno una volta
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                    switch (scelta) {//inizio costrutto di scelta
+                        case 1://se la scelta equivale a 1
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di j
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 2://se la scelta ecquivale a 2
+                            T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                            valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 3:// se la scelta ecquivale a 3
+                            T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                            valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
+                            j++;//incremento il valore di j
+                            i++;//incremento il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
+                            printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
+                    }//fine costrutto di scelta
+
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
+            }
+
+        }while ((valoreT[0]<a)&&(valoreT[1]<a)&&(valoreT[2]<a));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+        do {//mi permette di eseguire il ciclo almeno una volta
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                    switch (scelta) {//inizio costrutto di scelta
+                        case 1://se la scelta equivale a 1
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di j
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 2://se la scelta ecquivale a 2
+                            T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                            valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 3:// se la scelta ecquivale a 3
+                            T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                            valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
+                            j++;//incremento il valore di j
+                            i++;//incremento il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
+                            printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
+                    }//fine costrutto di scelta
+
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
+            }
+
+        }while ((valoreT[0]<a)&&(valoreT[1]<a)&&(valoreT[2]<a));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
     } else if (GIOCATORI == 4) {
         do {//mi permette di eseguire il ciclo almeno una volta
-            if (T[j].Proprietario ==
-                G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
-                if (G[i].numero_truppe!=0){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
-                    printf("il terreno dove devi mettere le truppe e' :%s\n",
-                           T[j].nome);//mi stampa il nome del territorio in questione
-                    printf("puoi ancora posizionare %d truppe sul tabellone prima del inizio del gioco\n ",//mi stampa il numero delle truppe rimanenti da piazzare
-                           G[i].numero_truppe -
-                           valoreT[i]);//messaggio per vedere il numero delle truppe prima del inizio vero del gioco
-                    printf("decidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
-                    scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
                     switch (scelta) {//inizio costrutto di scelta
                         case 1://se la scelta equivale a 1
-                            T[j].Armate++;//incremento il valore delle armate di uno
-                            valoreT[i]++;//incremento il valore della impostazione di controllo
-                            G[i].numero_truppe=G[i].numero_truppe-valoreT[i];
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
                             j++;//incrementa il valore di j
                             i++;//incrementa il valore di j
-                            j = j % 25;
-                            i = i % GIOCATORI;
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
                             break;//istruzione che serve per terminare il costrutto switch
                         case 2://se la scelta ecquivale a 2
                             T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
                             valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
-                            G[i].numero_truppe=G[i].numero_truppe-valoreT[i];
                             j++;//incrementa il valore di j
                             i++;//incrementa il valore di i
-                            j = j % 25;
-                            i = i % GIOCATORI;
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
                             break;//istruzione che serve per terminare il costrutto switch
                         case 3:// se la scelta ecquivale a 3
                             T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
                             valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
-                            G[i].numero_truppe=G[i].numero_truppe-valoreT[i];
                             j++;//incremento il valore di j
                             i++;//incremento il valore di i
-                            j = j % 25;
-                            i = i % GIOCATORI;
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
                             break;//istruzione che serve per terminare il costrutto switch
                         default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
                             printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
                     }//fine costrutto di scelta
+
                 }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
-                        i=i%GIOCATORI;
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
                 }
-            }else{
-                i++;
-                i=i%GIOCATORI;
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
             }
-        }while ((G[0].numero_truppe>=0) && (G[1].numero_truppe>=0) &&
-                 (G[2].numero_truppe>=0) && (G[3].numero_truppe>=0));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
 
-    } else if (GIOCATORI == 5) {
+        }while ((valoreT[0]<b)&&(valoreT[1]<b)&&(valoreT[2]<b)&&(valoreT[3]<b));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
         do {//mi permette di eseguire il ciclo almeno una volta
-            if (T[j].Proprietario ==
-                G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
-                if (valoreT[i] !=
-                    G[i].numero_truppe) {//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
-                    printf("il terreno dove devi mettere le truppe e' :%s\n",
-                           T[j].nome);//mi stampa il nome del territorio in questione
-                    printf("puoi ancora posizionare %d truppe sul tabellone prima del inizio del gioco\n ",//mi stampa il numero delle truppe rimanenti da piazzare
-                           G[i].numero_truppe -
-                           valoreT[i]);//messaggio per vedere il numero delle truppe prima del inizio vero del gioco
-                    printf("decidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
-                    scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
                     switch (scelta) {//inizio costrutto di scelta
                         case 1://se la scelta equivale a 1
-                            T[j].Armate++;//incremento il valore delle armate di uno
-                            valoreT[i]++;//incremento il valore della impostazione di controllo
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
                             j++;//incrementa il valore di j
                             i++;//incrementa il valore di j
-                            if (j == 25) {//controlla se il valore di j è arrivato a 25
-                                j = 0;//se e arrivato a 25 lo riporta a zero
+                            if(j==25){
+                                j=0;
                             }
-                            if (i == 5) {//controlla se il valore di i arriva a 5
-                                i = 0;//se arriva a 5 riporta il valore di i a 0
+                            if(i==GIOCATORI){
+                                i=0;
                             }
                             break;//istruzione che serve per terminare il costrutto switch
                         case 2://se la scelta ecquivale a 2
@@ -471,11 +644,11 @@ void schieramento(struct tabellone *T, int random) {
                             valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
                             j++;//incrementa il valore di j
                             i++;//incrementa il valore di i
-                            if (j == 25) {//controlla se il valore arriva a 25
-                                j = 0;//riporta il valore a zero
+                            if(j==25){
+                                j=0;
                             }
-                            if (i == 5) {//controlla se il valore di i arriva a 5
-                                i = 0;//se il valore di 5 arriva a 5 lo riporta a zero
+                            if(i==GIOCATORI){
+                                i=0;
                             }
                             break;//istruzione che serve per terminare il costrutto switch
                         case 3:// se la scelta ecquivale a 3
@@ -483,53 +656,53 @@ void schieramento(struct tabellone *T, int random) {
                             valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
                             j++;//incremento il valore di j
                             i++;//incremento il valore di i
-                            if (j == 25) {//controllo se j arriva a il valore di 25
-                                j = 0;//riporto il valore arrivato 25 a zero
+                            if(j==25){
+                                j=0;
                             }
-                            if (i == 5) {//controllo se il valore di i arriva a 5
-                                i = 0;//se il valore di i arriva a 5 lo riporto a zero
+                            if(i==GIOCATORI){
+                                i=0;
                             }
                             break;//istruzione che serve per terminare il costrutto switch
                         default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
                             printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
                     }//fine costrutto di scelta
-                } else {//questo else viene avviato solo se si sbaglia l'inserimento del valore che dobbiamo immettere
-                    printf("hai inserito tutte le truppe di cui disponevi\n ");//questo avviene solo quando si sono posizionate tutte le truppe al interno del tabellone
-                }
 
-            } else {//questo else avviene solo se quando non abbiamo trovato una corrispondenza con il valore id del giocatore quindi ci manda avanti il valore di una posizione
-                j++;//incrementa il valore di j
-                if (j == 25) {//controlla che il valore sia uguale a 25
-                    j = 0;//riporta il valore a zero
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
                 }
             }
-        } while ((valoreT[0] == G[0].numero_truppe) && (valoreT[1] == G[1].numero_truppe) &&
-                 (valoreT[2] == G[2].numero_truppe) && (valoreT[3] == G[3].numero_truppe) && (valoreT[4] ==
-                                                                                              G[4].numero_truppe));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
-    } else if (GIOCATORI == 6) {
+
+        }while ((valoreT[0]<b)&&(valoreT[1]<b)&&(valoreT[2]<b)&&(valoreT[3]<b));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
         do {//mi permette di eseguire il ciclo almeno una volta
-            if (T[j].Proprietario ==
-                G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
-                if (valoreT[i] !=
-                    G[i].numero_truppe) {//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
-                    printf("il terreno dove devi mettere le truppe e' :%s\n",
-                           T[j].nome);//mi stampa il nome del territorio in questione
-                    printf("puoi ancora posizionare %d truppe sul tabellone prima del inizio del gioco\n ",//mi stampa il numero delle truppe rimanenti da piazzare
-                           G[i].numero_truppe -
-                           valoreT[i]);//messaggio per vedere il numero delle truppe prima del inizio vero del gioco
-                    printf("decidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
-                    scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
                     switch (scelta) {//inizio costrutto di scelta
                         case 1://se la scelta equivale a 1
-                            T[j].Armate++;//incremento il valore delle armate di uno
-                            valoreT[i]++;//incremento il valore della impostazione di controllo
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
                             j++;//incrementa il valore di j
                             i++;//incrementa il valore di j
-                            if (j == 25) {//controlla se il valore di j è arrivato a 25
-                                j = 0;//se e arrivato a 25 lo riporta a zero
+                            if(j==25){
+                                j=0;
                             }
-                            if (i == 5) {//controlla se il valore di i arriva a 5
-                                i = 0;//se arriva a 5 riporta il valore di i a 0
+                            if(i==GIOCATORI){
+                                i=0;
                             }
                             break;//istruzione che serve per terminare il costrutto switch
                         case 2://se la scelta ecquivale a 2
@@ -537,11 +710,11 @@ void schieramento(struct tabellone *T, int random) {
                             valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
                             j++;//incrementa il valore di j
                             i++;//incrementa il valore di i
-                            if (j == 25) {//controlla se il valore arriva a 25
-                                j = 0;//riporta il valore a zero
+                            if(j==25){
+                                j=0;
                             }
-                            if (i == 5) {//controlla se il valore di i arriva a 5
-                                i = 0;//se il valore di 5 arriva a 5 lo riporta a zero
+                            if(i==GIOCATORI){
+                                i=0;
                             }
                             break;//istruzione che serve per terminare il costrutto switch
                         case 3:// se la scelta ecquivale a 3
@@ -549,74 +722,882 @@ void schieramento(struct tabellone *T, int random) {
                             valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
                             j++;//incremento il valore di j
                             i++;//incremento il valore di i
-                            if (j == 25) {//controllo se j arriva a il valore di 25
-                                j = 0;//riporto il valore arrivato 25 a zero
+                            if(j==25){
+                                j=0;
                             }
-                            if (i == 5) {//controllo se il valore di i arriva a 5
-                                i = 0;//se il valore di i arriva a 5 lo riporto a zero
+                            if(i==GIOCATORI){
+                                i=0;
                             }
                             break;//istruzione che serve per terminare il costrutto switch
                         default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
                             printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
                     }//fine costrutto di scelta
-                } else {//questo else viene avviato solo se si sbaglia l'inserimento del valore che dobbiamo immettere
-                    printf("hai inserito tutte le truppe di cui disponevi\n ");//questo avviene solo quando si sono posizionate tutte le truppe al interno del tabellone
-                }
 
-            } else {//questo else avviene solo se quando non abbiamo trovato una corrispondenza con il valore id del giocatore quindi ci manda avanti il valore di una posizione
-                j++;//incrementa il valore di j
-                if (j == 25) {//controlla che il valore sia uguale a 25
-                    j = 0;//riporta il valore a zero
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
                 }
             }
-        } while ((valoreT[0] == G[0].numero_truppe) && (valoreT[1] == G[1].numero_truppe) &&
-                 (valoreT[2] == G[2].numero_truppe) && (valoreT[3] == G[3].numero_truppe) &&
-                 (valoreT[4] == G[4].numero_truppe) && (valoreT[5] ==
-                                                        G[5].numero_truppe));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+
+        }while ((valoreT[0]<b)&&(valoreT[1]<b)&&(valoreT[2]<b)&&(valoreT[3]<b));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+        do {//mi permette di eseguire il ciclo almeno una volta
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                    switch (scelta) {//inizio costrutto di scelta
+                        case 1://se la scelta equivale a 1
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di j
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 2://se la scelta ecquivale a 2
+                            T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                            valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 3:// se la scelta ecquivale a 3
+                            T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                            valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
+                            j++;//incremento il valore di j
+                            i++;//incremento il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
+                            printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
+                    }//fine costrutto di scelta
+
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
+            }
+
+        }while ((valoreT[0]<b)&&(valoreT[1]<b)&&(valoreT[2]<b)&&(valoreT[3]<b));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+} else if (GIOCATORI == 5) {
+        do {//mi permette di eseguire il ciclo almeno una volta
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                    switch (scelta) {//inizio costrutto di scelta
+                        case 1://se la scelta equivale a 1
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di j
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 2://se la scelta ecquivale a 2
+                            T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                            valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 3:// se la scelta ecquivale a 3
+                            T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                            valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
+                            j++;//incremento il valore di j
+                            i++;//incremento il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
+                            printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
+                    }//fine costrutto di scelta
+
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
+            }
+
+        }while ((valoreT[0]<c)&&(valoreT[1]<c)&&(valoreT[2]<c)&&(valoreT[3]<c)&&(valoreT[4]<c));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+        do {//mi permette di eseguire il ciclo almeno una volta
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                    switch (scelta) {//inizio costrutto di scelta
+                        case 1://se la scelta equivale a 1
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di j
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 2://se la scelta ecquivale a 2
+                            T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                            valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 3:// se la scelta ecquivale a 3
+                            T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                            valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
+                            j++;//incremento il valore di j
+                            i++;//incremento il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
+                            printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
+                    }//fine costrutto di scelta
+
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
+            }
+
+        }while ((valoreT[0]<c)&&(valoreT[1]<c)&&(valoreT[2]<c)&&(valoreT[3]<c)&&(valoreT[4]<c));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+        do {//mi permette di eseguire il ciclo almeno una volta
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                    switch (scelta) {//inizio costrutto di scelta
+                        case 1://se la scelta equivale a 1
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di j
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 2://se la scelta ecquivale a 2
+                            T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                            valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 3:// se la scelta ecquivale a 3
+                            T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                            valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
+                            j++;//incremento il valore di j
+                            i++;//incremento il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
+                            printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
+                    }//fine costrutto di scelta
+
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
+            }
+
+        }while ((valoreT[0]<c)&&(valoreT[1]<c)&&(valoreT[2]<c)&&(valoreT[3]<c)&&(valoreT[4]<c));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+        do {//mi permette di eseguire il ciclo almeno una volta
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                    switch (scelta) {//inizio costrutto di scelta
+                        case 1://se la scelta equivale a 1
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di j
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 2://se la scelta ecquivale a 2
+                            T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                            valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 3:// se la scelta ecquivale a 3
+                            T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                            valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
+                            j++;//incremento il valore di j
+                            i++;//incremento il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
+                            printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
+                    }//fine costrutto di scelta
+
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
+            }
+
+        }while ((valoreT[0]<c)&&(valoreT[1]<c)&&(valoreT[2]<c)&&(valoreT[3]<c)&&(valoreT[4]<c));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+        do {//mi permette di eseguire il ciclo almeno una volta
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                    switch (scelta) {//inizio costrutto di scelta
+                        case 1://se la scelta equivale a 1
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di j
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 2://se la scelta ecquivale a 2
+                            T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                            valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 3:// se la scelta ecquivale a 3
+                            T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                            valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
+                            j++;//incremento il valore di j
+                            i++;//incremento il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
+                            printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
+                    }//fine costrutto di scelta
+
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
+            }
+
+        }while ((valoreT[0]<c)&&(valoreT[1]<c)&&(valoreT[2]<c)&&(valoreT[3]<c)&&(valoreT[4]<c));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+
+} else if (GIOCATORI == 6) {
+        do {//mi permette di eseguire il ciclo almeno una volta
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                    switch (scelta) {//inizio costrutto di scelta
+                        case 1://se la scelta equivale a 1
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di j
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 2://se la scelta ecquivale a 2
+                            T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                            valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 3:// se la scelta ecquivale a 3
+                            T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                            valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
+                            j++;//incremento il valore di j
+                            i++;//incremento il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
+                            printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
+                    }//fine costrutto di scelta
+
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
+            }
+
+        }while ((valoreT[0]<d)&&(valoreT[1]<d)&&(valoreT[2]<d)&&(valoreT[3]<d)&&(valoreT[4]<d)&&(valoreT[5]<d));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+        do {//mi permette di eseguire il ciclo almeno una volta
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                    switch (scelta) {//inizio costrutto di scelta
+                        case 1://se la scelta equivale a 1
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di j
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 2://se la scelta ecquivale a 2
+                            T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                            valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 3:// se la scelta ecquivale a 3
+                            T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                            valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
+                            j++;//incremento il valore di j
+                            i++;//incremento il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
+                            printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
+                    }//fine costrutto di scelta
+
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
+            }
+
+        }while ((valoreT[0]<d)&&(valoreT[1]<d)&&(valoreT[2]<d)&&(valoreT[3]<d)&&(valoreT[4]<d)&&(valoreT[5]<d));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+        do {//mi permette di eseguire il ciclo almeno una volta
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                    switch (scelta) {//inizio costrutto di scelta
+                        case 1://se la scelta equivale a 1
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di j
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 2://se la scelta ecquivale a 2
+                            T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                            valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 3:// se la scelta ecquivale a 3
+                            T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                            valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
+                            j++;//incremento il valore di j
+                            i++;//incremento il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
+                            printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
+                    }//fine costrutto di scelta
+
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
+            }
+
+        }while ((valoreT[0]<d)&&(valoreT[1]<d)&&(valoreT[2]<d)&&(valoreT[3]<d)&&(valoreT[4]<d)&&(valoreT[5]<d));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+        do {//mi permette di eseguire il ciclo almeno una volta
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                    switch (scelta) {//inizio costrutto di scelta
+                        case 1://se la scelta equivale a 1
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di j
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 2://se la scelta ecquivale a 2
+                            T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                            valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 3:// se la scelta ecquivale a 3
+                            T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                            valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
+                            j++;//incremento il valore di j
+                            i++;//incremento il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
+                            printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
+                    }//fine costrutto di scelta
+
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
+            }
+
+        }while ((valoreT[0]<d)&&(valoreT[1]<d)&&(valoreT[2]<d)&&(valoreT[3]<d)&&(valoreT[4]<d)&&(valoreT[5]<d));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+        do {//mi permette di eseguire il ciclo almeno una volta
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                    switch (scelta) {//inizio costrutto di scelta
+                        case 1://se la scelta equivale a 1
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di j
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 2://se la scelta ecquivale a 2
+                            T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                            valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 3:// se la scelta ecquivale a 3
+                            T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                            valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
+                            j++;//incremento il valore di j
+                            i++;//incremento il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
+                            printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
+                    }//fine costrutto di scelta
+
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
+            }
+
+        }while ((valoreT[0]<d)&&(valoreT[1]<d)&&(valoreT[2]<d)&&(valoreT[3]<d)&&(valoreT[4]<d)&&(valoreT[5]<d));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+        do {//mi permette di eseguire il ciclo almeno una volta
+
+            if (T[j].Proprietario==G[i].ID) {//in teoria questo dovrebbe farmi vedere quale terreno appartiene ad oggni proprietario
+                printf("\nil terreno dove devi mettere le truppe e' :%s\n",T[j].nome);//mi stampa il nome del territorio in questione
+                printf("%s\n",G[i].Nome);
+                printf("hai ancora a disposizione :%d",G[i].numero_truppe-valoreT[i]);
+                printf("\ndecidi quante truppe da piazzare al interrno del territorio ti ricordo che ne puoi mettere solo 3 alla volta\n ");//ricorda al utente che puo mettere solo da 1 a 4 truppe sul terreno
+                printf("\nil numero di armate presenti al interno del territorio  e' :%d",T[j].Armate);
+                scanf("%d", &scelta);//mi serve per liberare il buffer daleventuale presa del tasto di invio
+                if ((G[i].numero_truppe>0)){//il numero va a crescere cosiche quando arriva al numero massimo delle armate si ferma
+                    switch (scelta) {//inizio costrutto di scelta
+                        case 1://se la scelta equivale a 1
+                            T[j].Armate=T[j].Armate+1;//incremento il valore delle armate di uno
+                            valoreT[i]=valoreT[i]+1;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di j
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 2://se la scelta ecquivale a 2
+                            T[j].Armate = T[j].Armate + 2;//incremento il valore delle armate di due
+                            valoreT[i] = valoreT[i] + 2;//incremento il valore della impostazione di controllo
+                            j++;//incrementa il valore di j
+                            i++;//incrementa il valore di i
+                            if(j==25){
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        case 3:// se la scelta ecquivale a 3
+                            T[j].Armate = T[j].Armate + 3;//incremento il valore delle armate di tre
+                            valoreT[i] = valoreT[i] + 3;//incremento il valore della impostazione di controllo
+                            j++;//incremento il valore di j
+                            i++;//incremento il valore di i
+                            if(j==25){//non mi ricordo per quale motivo ho cambiatoquesto valore l'ultima volta pero sicuramente aveva a che fare con i territori
+                                j=0;
+                            }
+                            if(i==GIOCATORI){
+                                i=0;
+                            }
+                            break;//istruzione che serve per terminare il costrutto switch
+                        default ://se la scelta non è contemplata con le impostazioni che ho dato al programma
+                            printf("hai inserito un valore non supportato riprova\n");//stampa a video il messaggio di errore
+                    }//fine costrutto di scelta
+
+                }else{printf("hai finito il numero di truppe mi dispiace ma tu non puoi metterne altre");
+                    i++;
+                    if(i==GIOCATORI-1){
+                        i=0;
+                    }
+                }
+            }else {//questo succede se non trova delle corrispondenze
+                j++;
+                if (j == 24) {
+                    j = 0;
+                }
+            }
+
+        }while ((valoreT[0]<d)&&(valoreT[1]<d)&&(valoreT[2]<d)&&(valoreT[3]<d)&&(valoreT[4]<d)&&(valoreT[5]<d));//questa condizione mi permette di rifar ciclare il codice al interno del do perche si ha inserito un valore diverso da quello che deve essere
+//qua metto un altro if else perche qua finisce appena arriva al valore designato
+
     }
 }
 
 
-int Fase_principale(struct giocatore *G, int random,
-                    struct tabellone *T) {//questa e la fase principale del progetto prende in ingresso la struttura giocatore e il valore generato random
+int Fase_principale(int random,struct tabellone *T,struct Lista *MAZZO) {//questa e la fase principale del progetto prende in ingresso la struttura giocatore e il valore generato random
     //fase iniziale del turno //
-    int scelta;
-    int i;//variabile indice del for
+    int scelta;//questa e la scelta che esegue l'utente
+    int i,k,b=0;//variabile indice del for
 
-    for (i = random; i <
-                     GIOCATORI; i++) {//questo for cicla al infinito in modo che il programma continui a girare a meno che non si utilizza la funzione apposta per uscire
+    for (i = random; i <GIOCATORI; i++) {//questo for cicla al infinito in modo che il programma continui a girare a meno che non si utilizza la funzione apposta per uscire
         //truppe(G,i);//assegno delle truppe al giocatore
-        if (i == GIOCATORI - 1) {//mi serve per azzerare il valore di controllo del for
-            printf("è il turno del giocatore %d", i);
-            truppe(i);
-            printf("che cosa vuoi fare??");//stampa a video il messaggio
-            printf("1)ATTACCARE");//stampa a video il messaggio
-            printf("2)SPOSTARE TRUPPE");//stampa a video il messaggio
-            printf("3)SALVARE");//stampa a video il messaggio
-            printf("4)TERMINARE IL TURNO");//stampa a video il messaggio
-            scanf("%d", &scelta);//faccio prendere un valore in ingresso da tastiera
-            getchar();//svuoto il buffer ed evito che venga preso il valore di enter come prossimo paramentro in ingresso
-            i = 0;//viene riportato a zero quando arriva al massimo dei giocatori
-        } else {//questo deve avvenire quasi sempre ammeno che non si verifichi la situazione del if
-            truppe(i);
-            printf("che cosa vuoi fare??");//stampa a video il messaggio
-            printf("1)ATTACCARE");//stampa a video il messaggio
-            printf("2)SPOSTARE TRUPPE");//stampa a video il messaggio
-            printf("3)SALVARE");//stampa a video il messaggio
-            printf("4)TERMINARE IL TURNO");//stampa a video il messaggio
-            scanf("%d", &scelta);//prende in ingresso un valore da tastiera
-            getchar();//svuoto il buffer e evito che venga preso il valore di enter come prossimo carattere in ingresso
+        truppe(i);//incrementa il numero delle truppe del giocatore corrente
+        if(b<27) {
+            Pesca(b,i,MAZZO);//faccio pescare al giocatore una carta
+            b++;//incremento il valore di b
         }
         do {
+        if (i == (GIOCATORI-1)) {//mi serve per azzerare il valore di controllo del for
+            printf("\nE' il turno del giocatore %s\n", G[i].Nome);
+            truppe(i);// aumenta le truppe relative al giocatore
+            printf("\nche cosa vuoi fare??\n");//stampa a video il messaggio
+            printf("\n1)ATTACCARE\n");//stampa a video il messaggio
+            printf("\n2)SPOSTARE TRUPPE\n");//stampa a video il messaggio
+            printf("\n3)SALVARE\n");//stampa a video il messaggio
+            printf("\n4)TERMINARE IL TURNO\n");//stampa a video il messaggio
+            scanf("%d", &scelta);//faccio prendere un valore in ingresso da tastiera
+            //getchar();//svuoto il buffer ed evito che venga preso il valore di enter come prossimo paramentro in ingresso
+            k=i;//assegno il valore di i a k
+            i=0;
+            //i = i%GIOCATORI;//viene riportato a zero quando arriva al massimo dei giocatori
+        } else {//questo deve avvenire quasi sempre ammeno che non si verifichi la situazione del if
+            printf("\nE' il turno del giocatore %s\n", G[i].Nome);
+            printf("\nche cosa vuoi fare??\n");//stampa a video il messaggio
+            printf("\n1)ATTACCARE\n");//stampa a video il messaggio
+            printf("\n2)SPOSTARE TRUPPE\n");//stampa a video il messaggio
+            printf("\n3)SALVARE\n");//stampa a video il messaggio
+            printf("\n4)TERMINARE IL TURNO\n");//stampa a video il messaggio
+            scanf("%d", &scelta);//prende in ingresso un valore da tastiera
+            //getchar();//svuoto il buffer e evito che venga preso il valore di enter come prossimo carattere in ingresso
+            k=i;//assegno il valore di i a k
+
+        }
             switch (scelta) {//in base al numero che viene digitato fa succedere le diverse funzioni
-                case 1:
-                    attacco(i, T);//situazione in cui si digita il numero 1
+                case 1://se la scelta è uguale uno
+                    gioca();
+                    attacco(k, T);//situazione in cui si digita il numero 1
                     //qua prendo in ingresso delle funzioni in modo da non dilungare il codice oltremodo
                     break;//interrompe la questa parte di codice e la fa uscire dal flusso
-                case 2:
-                    spostamento_truppe(i, T);//situazione in cui si digita il numero 2
+                case 2://se la scelta è uguale a due
+                    gioca();
+                    spostamento_truppe(k, T);//situazione in cui si digita il numero 2
                     break;//interrompe la questa parte di codice e la fa uscire dal flusso
                 case 3://situazione in cui si digita il numero 3
+                    salvataggio(i,T);
                     break;//interrompe la questa parte di codice e la fa uscire dal flusso
                 case 4://situazione in cui si digita il numero 4
                     printf("hai deciso di terminare il turno");
@@ -624,49 +1605,58 @@ int Fase_principale(struct giocatore *G, int random,
                 default ://situazione in cui si digita il valore sbagliato
                     printf("hai inserito un numero sbagliato riprova");
             }
-        } while (scelta >
-                 4);//viene fatto riciclare la parte al interno del do while perche si ha inserito un numero diverso da quelli elencati
+        } while (scelta >4);//viene fatto riciclare la parte al interno del do while perche si ha inserito un numero diverso da quelli elencati
         //devo controllare quali territori sono vicini ai terreni confinanti dei giocatore in questione e quale puo attaccare
         //devo prima dare le carte a tutti i giocatori altrimenti non posso andare avanti con il funzionamento del gioco
+        //i =i%GIOCATORI;
     }//fine for
 }//fine funzione principale
 
-int attacco(int a,
-            struct tabellone *T) {//questo è la funzione per l'attacco prende in ingresso il vettore giocatori piu il numero del attaccante e del difensore
-    giocatore *G;
-    int scelta, sceltaD, sceltaT, sceltaT1, i, j;//variabili che mi  servono al interno della
+int attacco(int a,struct tabellone *T) {//questo è la funzione per l'attacco prende in ingresso il vettore giocatori piu il numero del attaccante e del difensore
+    int scelta, sceltaD, sceltaT, sceltaT1, i=0, j=0,k;//variabili che mi  servono al interno della
     int D1[3], D2[3], D3; //dadi attacco, difesa ausiliari
-    printf("scegli da quale dei tuoi terreni attaccare");
-    for (i = 0; i < 26; i++) {
+    printf("\n%s\n",G[a].Nome);//stampa il nome a video
+    printf("\nscegli da quale dei tuoi terreni attaccare\n");
+    //sto provando a cambiare la selezione dei territori da attaccare al posto di un for sto mettendo un do-while in modo che mi faccia vedere tutti i terreni
+    do{
+        if(T[j].Proprietario == G[a].ID){//
+            printf("\n%d)%s\n", j, T[j].nome);//stampo tutti i nomi dei territori che hanno in comune l'id con il proprietario
+        }
+        j++;//aumento la variabile j per arrivare alla fine del array dei terreni
+    }while(j<25);//controlla se j è diverso da 25 quando arriva a 25 si ferma
+
+   /* for (i = 0; i < 25; i++) {
         if (T[i].Proprietario == G[i].ID) {
             printf("%d)%s", i, T[i].nome);
         }
-    }
+    }*/
 
-    do {
+    do {//questo controlla se ci sono abbastanza truppe per poter attaccare il teritorio altrimenti viene visualizzato un messaggio di errore e che non possiamo attaccare da quel terreno
         scanf("%d", &sceltaT);
         if (T[sceltaT].Armate == 1) {
-            printf("non puoi attaccare da questo territorio");
+            printf("\nnon puoi attaccare da questo territorio");
         } else {
             break;
         }
     } while (-1);
-    printf("puoi attaccare i seguenti terreni dal territorio che hai scelto");
-    printf("quale terreno vuoi attaccare??");
-    for (i = 0; i < 26; i++) {
-        if (isAdjacent(sceltaT, i) == true) {
-            printf("%d)%s", T[i].nome);
+    printf("\npuoi attaccare i seguenti terreni dal territorio che hai scelto\n");
+    printf("\nquale terreno vuoi attaccare\n??");
+    for (i = 0; i < 25; i++) {
+        if(isAdjacent(sceltaT, i) == true){
+            if(T[i].Proprietario!=G[a].ID){
+                printf("\n%d)%s\n", i,T[i].nome);
+            }
         }
     }
 
     do {
         scanf("%d", &sceltaT1);
         if (isAdjacent(sceltaT, sceltaT1) == true) {
-            printf("stai attaccando %s", T[sceltaT1].nome);
+            printf("\nstai attaccando %s\n", T[sceltaT1].nome);
             break;//termina il flusso uscendo dal do in modo che il while messo a -1 non continui a ciclare al infinito
         } else {
-            printf("hai sbagliato inserendo il numero del territorio da attaccare");
-            printf("il terreno che hai selto non è nelle vicinanze del tuo");
+            printf("\nhai sbagliato inserendo il numero del territorio da attaccare\n");
+            printf("\nil terreno che hai selto non è nelle vicinanze del tuo\n");
         }
 
     } while (-1);
@@ -676,7 +1666,14 @@ int attacco(int a,
     for (i = 0; i < scelta; i++) {
         D1[i] = Adadi();
     }
-    printf("scegli con quante truppe difendere");
+    for(i=0;i<GIOCATORI;i++){//ciclo for che mi fa scorrere tutti i giocatori
+        if(T[sceltaT1].Proprietario==G[i].ID){//controlla che l'id al interno del terreno sia uguale a quello del giocatore che sto scorrendo
+            k=i;
+            printf("\n%s\n",G[k].Nome);//siccome il numero del id e univoco non ci possono essere due persone con lo stesso id quindi blocco il ciclo appena trova una corrispondenza
+            break;//istruzione che blocca il ciclo for appena trova una corrispondenza
+        }
+    }
+    printf("\nscegli con quante truppe difendere\n");
     scanf("%d", &sceltaD);
     getchar();
     for (i = 0; i < sceltaD; i++) {
@@ -694,8 +1691,8 @@ int attacco(int a,
             }
         }
     }
-    for (i = 0; sceltaD < 3; i++) {//cicla in base al numero dei dadi
-        for (j = 0; sceltaD < 3; j++) {//seconda passata per trovare il numero piu  grande dei dadi
+    for (i = 0; i< sceltaD; i++) {//cicla in base al numero dei dadi
+        for (j = 0; j < sceltaD; j++) {//seconda passata per trovare il numero piu  grande dei dadi
             if (D2[i] > D2[i + 1]) {
                 D3 = D2[i];
                 D2[i] = D2[i + 1];
@@ -708,34 +1705,43 @@ int attacco(int a,
     switch (scelta) {//questo primo switch mi permette di decidere quanti dadi verranno lanciati dal attaccante
         case 1:
             switch (sceltaD) {//questo mi permettere di scegliere con quanti dadi dovra difendere
-                case 1://caso uno con un dado di attatto e un dado di difesa
+                case 1:
                     if (D1[0] > D2[0]) {//controllo se e maggiore
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     } else if (D1[0] < D2[0]) {//se e minore
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if (D1[0] == D2[0]) {//se è uguale
                         printf("non succede niente");//questo messaggio avviene quando i dadi sono pari
                     }
                     break;//istruzione di blocco
-                case 2://con due dadi da attacco ma siccome dobbiamo controllare sempre quello maggiore
-                    if ((D1[0] > D2[0])) {//se e maggiore
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
-                    } else if ((D1[0] < D2[0])) {//se e minore
+                case 2:
+                    if (D1[0] > D2[0]) {//controllo se e maggiore
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
+                    } else if (D1[0] < D2[0]) {//se e minore
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;//elimino un armata dal territorio che sta attaccando
-                    } else if (D1[0] == D2[0]) {//Se e uguale
-                        printf("non succede niente");
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
+                    } else if (D1[0] == D2[0]) {//se è uguale
+                        printf("non succede niente");//questo messaggio avviene quando i dadi sono pari
                     }
                     break;//istruzione di blocco
-                case 3://con tre dadi sempre controllando il maggiore tra i dadi
-                    if ((D1[0] > D2[0])) {//se e maggiore
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
-                    } else if ((D1[0] < D2[0])) {//Se e minore
+                case 3:
+                    if (D1[0] > D2[0]) {//controllo se e maggiore
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
+                    } else if (D1[0] < D2[0]) {//se e minore
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;//elimino un armata dal territorio che sta attaccando
-                    } else if (D1[0] == D2[0]) {//se e uguale
-                        printf("non succede niente");
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
+                    } else if (D1[0] == D2[0]) {//se è uguale
+                        printf("non succede niente");//questo messaggio avviene quando i dadi sono pari
                     }
                     break;//istruzione di blocco
             }
@@ -744,10 +1750,13 @@ int attacco(int a,
             switch (sceltaD) {//questo mi permettere di scegliere con quanti dadi dovra difendere
                 case 1://se decide di difendere con un dado
                     if ((D1[0] > D2[0])) {//se e maggiore
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     } else if ((D1[0] < D2[0])) {//se e minore
                         T[sceltaT].Armate = T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if (D1[0] == D2[0]) {//se e uguale
                         printf("non succede niente");
                     }
@@ -755,180 +1764,292 @@ int attacco(int a,
                 case 2://se decide di difendere con due dadi
                     if ((D1[0] > D2[0]) && (D1[1] > D2[1])) {//se e maggiore
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 2;
+                        printf("\nil giocatore %s perde due truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=2;
                     } else if ((D1[0] < D2[0]) && (D1[1] < D2[1])) {//se e minore
                         T[sceltaT].Armate = T[sceltaT].Armate - 2;
+                        printf("\nil giocatore %s perde due truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=2;
                     } else if ((D1[0] < D2[0]) && (D1[1] > D2[1])) {//se un solo dado e minore
-                        T[sceltaT].Armate =
-                                T[sceltaT].Armate - 1;//elimino un armata dal territorio che è stato attaccato
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        T[sceltaT].Armate =T[sceltaT].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if ((D1[0] > D2[0]) && (D1[1] < D2[1])) {//seconda variabile che il dado sia minore
-                        T[sceltaT].Armate =
-                                T[sceltaT].Armate - 1;//elimino un armata dal territorio che è stato attaccato
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        T[sceltaT].Armate =T[sceltaT].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if ((D1[0] == D2[0]) && (D1[1] == D2[1])) {//se i dadi sono uguale
                         printf("non succede niente");
                     } else if ((D1[0] == D2[0]) && (D1[1] < D2[1])) {//se un dado e minore e uno uguale
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if ((D1[0] < D2[0]) && (D1[1] == D2[1])) {//se un dado e minore e uno uguale variante
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if ((D1[0] == D2[0]) && (D1[1] > D2[1])) {//se un dado e maggiore e uno uguale
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     } else if ((D1[0] > D2[0]) && (D1[1] == D2[1])) {//se un dado e maggiore e uno uguale variante
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     }
                     break;//istruzzione per la fine del blocco
                 case 3://caso con tre dadi in difesa
-                    if ((D1[0] > D2[0]) && (D1[1] > D2[1])) {//se sono tutti maggiori
+                    if ((D1[0] > D2[0]) && (D1[1] > D2[1])) {//se e maggiore
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 2;
-                    } else if ((D1[0] < D2[0]) && (D1[1] < D2[1])) {//se sono tutti minori
+                        printf("\nil giocatore %s perde due truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=2;
+                    } else if ((D1[0] < D2[0]) && (D1[1] < D2[1])) {//se e minore
                         T[sceltaT].Armate = T[sceltaT].Armate - 2;
-                    } else if ((D1[0] < D2[0]) && (D1[1] > D2[1])) {//se uno e maggiore e l'altro e minore
-                        T[sceltaT].Armate =
-                                T[sceltaT].Armate - 1;//elimino un armata dal territorio che è stato attaccato
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
-                    } else if ((D1[0] > D2[0]) && (D1[1] < D2[1])) {//se uno e maggiore e l'altro e minore variante
-                        T[sceltaT].Armate =
-                                T[sceltaT].Armate - 1;//elimino un armata dal territorio che è stato attaccato
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
-                    } else if ((D1[0] == D2[0]) && (D1[1] == D2[1])) {//se sono tutti uguali
+                        printf("\nil giocatore %s perde due truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=2;
+                    } else if ((D1[0] < D2[0]) && (D1[1] > D2[1])) {//se un solo dado e minore
+                        T[sceltaT].Armate =T[sceltaT].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
+                    } else if ((D1[0] > D2[0]) && (D1[1] < D2[1])) {//seconda variabile che il dado sia minore
+                        T[sceltaT].Armate =T[sceltaT].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
+                    } else if ((D1[0] == D2[0]) && (D1[1] == D2[1])) {//se i dadi sono uguale
                         printf("non succede niente");
                     } else if ((D1[0] == D2[0]) && (D1[1] < D2[1])) {//se un dado e minore e uno uguale
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if ((D1[0] < D2[0]) && (D1[1] == D2[1])) {//se un dado e minore e uno uguale variante
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if ((D1[0] == D2[0]) && (D1[1] > D2[1])) {//se un dado e maggiore e uno uguale
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     } else if ((D1[0] > D2[0]) && (D1[1] == D2[1])) {//se un dado e maggiore e uno uguale variante
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     }
-                    break;//istruzione di fine blocco
+                    break;//istruzzione per la fine del blocco
             }
             break;//istruzione di fine blocco dello switch principale
         case 3://caso in cui ci sono tre dadi in attacco
             switch (sceltaD) {//questo mi permettere di scegliere con quanti dadi dovra difendere
-                case 1://solo un dado in difesa
+                case 1:
                     if ((D1[0] > D2[0])) {//se e maggiore
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     } else if ((D1[0] < D2[0])) {//se e minore
-                        T[sceltaT].Armate = T[sceltaT].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        T[sceltaT].Armate = T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if (D1[0] == D2[0]) {//se e uguale
                         printf("non succede niente");
                     }
-                    break;//istruzione fine blocco
-
-                case 2://se in difesa abbiamo due dadi
-                    if ((D1[0] > D2[0]) && (D1[1] > D2[1])) {//se sono tutti maggiori
+                    break;//istruzione di blocco
+                case 2://se decide di difendere con due dadi
+                    if ((D1[0] > D2[0]) && (D1[1] > D2[1])) {//se e maggiore
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 2;
-                    } else if ((D1[0] < D2[0]) && (D1[1] < D2[1])) {//se sono tutti minori
+                        printf("\nil giocatore %s perde due truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=2;
+                    } else if ((D1[0] < D2[0]) && (D1[1] < D2[1])) {//se e minore
                         T[sceltaT].Armate = T[sceltaT].Armate - 2;
-                    } else if ((D1[0] < D2[0]) && (D1[1] > D2[1])) {//se uno e maggiore e l'altro e minore
-                        T[sceltaT].Armate =
-                                T[sceltaT].Armate - 1;//elimino un armata dal territorio che è stato attaccato
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
-                    } else if ((D1[0] > D2[0]) && (D1[1] < D2[1])) {//se uno e maggiore e l'altro e minore variante
-                        T[sceltaT].Armate =
-                                T[sceltaT].Armate - 1;//elimino un armata dal territorio che è stato attaccato
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
-                    } else if ((D1[0] == D2[0]) && (D1[1] == D2[1])) {//se sono tutti uguali
+                        printf("\nil giocatore %s perde due truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=2;
+                    } else if ((D1[0] < D2[0]) && (D1[1] > D2[1])) {//se un solo dado e minore
+                        T[sceltaT].Armate =T[sceltaT].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
+                    } else if ((D1[0] > D2[0]) && (D1[1] < D2[1])) {//seconda variabile che il dado sia minore
+                        T[sceltaT].Armate =T[sceltaT].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
+                    } else if ((D1[0] == D2[0]) && (D1[1] == D2[1])) {//se i dadi sono uguale
                         printf("non succede niente");
                     } else if ((D1[0] == D2[0]) && (D1[1] < D2[1])) {//se un dado e minore e uno uguale
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if ((D1[0] < D2[0]) && (D1[1] == D2[1])) {//se un dado e minore e uno uguale variante
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if ((D1[0] == D2[0]) && (D1[1] > D2[1])) {//se un dado e maggiore e uno uguale
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     } else if ((D1[0] > D2[0]) && (D1[1] == D2[1])) {//se un dado e maggiore e uno uguale variante
-                        T[sceltaT1].Armate =
-                                T[sceltaT1].Armate - 1;//elimino un armata dal territorio che sta attaccando
+                        T[sceltaT1].Armate =T[sceltaT1].Armate - 1;//elimino un armata dal territorio che è stato attaccato
+                        printf("\nil giocatore %s perde una truppa\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     }
-                    break;//istruzione di fine blocco
+                    break;//istruzzione per la fine del blocco
                 case 3://se ci sono tre dadi in difesa
                     if ((D1[0] > D2[0]) && (D1[1] > D2[1]) && (D1[2] > D2[2])) {//se sono tutti maggiori
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 3;
+                        printf("\nil giocatore %s perde tre truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=3;
                     } else if ((D1[0] < D2[0]) && (D1[1] > D2[1]) && (D1[2] > D2[2])) {//se solo uno e minore
-                        T[sceltaT].Armate = T[sceltaT].Armate - 2;
-                        T[sceltaT1].Armate = T[sceltaT1].Armate - 1;
+                        T[sceltaT1].Armate = T[sceltaT].Armate - 2;
+                        printf("\nil giocatore %s perde due truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=2;
+                        T[sceltaT].Armate = T[sceltaT1].Armate - 1;
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if ((D1[0] > D2[0]) && (D1[1] < D2[1]) && (D1[2] > D2[2])) {//se solo uno e minore variante 1
-                        T[sceltaT].Armate = T[sceltaT].Armate - 2;
-                        T[sceltaT1].Armate = T[sceltaT1].Armate - 1;
+                        T[sceltaT1].Armate = T[sceltaT1].Armate - 2;
+                        printf("\nil giocatore %s perde due truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=2;
+                        T[sceltaT].Armate = T[sceltaT].Armate - 1;
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if ((D1[0] > D2[0]) && (D1[1] > D2[1]) && (D1[2] < D2[2])) {//se solo uno e minore variante 2
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 2;
+                        printf("\nil giocatore %s perde due truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=2;
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if ((D1[0] < D2[0]) && (D1[1] < D2[1]) && (D1[2] > D2[2])) {// se sono due minori
                         T[sceltaT].Armate = T[sceltaT].Armate - 2;
+                        printf("\nil giocatore %s perde due truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=2;
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 1;
+                        printf("\nil giocatore %s perde una truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     } else if ((D1[0] < D2[0]) && (D1[1] > D2[1]) && (D1[2] < D2[2])) {// se sono due minori variante 1
                         T[sceltaT].Armate = T[sceltaT].Armate - 2;
+                        printf("\nil giocatore %s perde due truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=2;
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 1;
+                        printf("\nil giocatore %s perde una truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     } else if ((D1[0] > D2[0]) && (D1[1] < D2[1]) && (D1[2] < D2[2])) {// se sono due minori variante 2
                         T[sceltaT].Armate = T[sceltaT].Armate - 2;
+                        printf("\nil giocatore %s perde due truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=2;
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 1;
+                        printf("\nil giocatore %s perde una truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=2;
                     } else if ((D1[0] < D2[0]) && (D1[1] < D2[1]) && (D1[2] < D2[2])) {//se sono tutti minori
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 3;
+                        printf("\nil giocatore %s perde tre truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=3;
                     } else if ((D1[0] == D2[0]) && (D1[1] == D2[1]) && (D1[2] == D2[2])) {// se sono tutti uguali
                         printf("non succede niente");
                     } else if ((D1[0] < D2[0]) && (D1[1] == D2[1]) && (D1[2] == D2[2])) {//se solo uno e minore
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if ((D1[0] == D2[0]) && (D1[1] < D2[1]) && (D1[2] == D2[2])) {//se solo uno e minore
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if ((D1[0] == D2[0]) && (D1[1] == D2[1]) && (D1[2] < D2[2])) {//se solo uno e minore
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                     } else if ((D1[0] > D2[0]) && (D1[1] == D2[1]) && (D1[2] == D2[2])) {//se solo uno e maggiore
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 1;
+                        printf("\nil giocatore %s perde una truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     } else if ((D1[0] == D2[0]) && (D1[1] > D2[1]) && (D1[2] == D2[2])) {//se solo uno e maggiore
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 1;
+                        printf("\nil giocatore %s perde una truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     } else if ((D1[0] == D2[0]) && (D1[1] == D2[1]) && (D1[2] > D2[2])) {//se solo uno e maggiore
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 1;
+                        printf("\nil giocatore %s perde una truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     } else if ((D1[0] < D2[0]) && (D1[1] < D2[1]) && (D1[2] == D2[2])) {//se sono due minori
                         T[sceltaT].Armate = T[sceltaT].Armate - 2;
+                        printf("\nil giocatore %s perde due truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=2;
                     } else if ((D1[0] == D2[0]) && (D1[1] < D2[1]) && (D1[2] < D2[2])) {//se sono due minori variante 1
                         T[sceltaT].Armate = T[sceltaT].Armate - 2;
+                        printf("\nil giocatore %s perde due truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=2;
                     } else if ((D1[0] < D2[0]) && (D1[1] == D2[1]) && (D1[2] < D2[2])) {//se sono due minori variante 2
                         T[sceltaT].Armate = T[sceltaT].Armate - 2;
+                        printf("\nil giocatore %s perde due truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=2;
                     } else if ((D1[0] > D2[0]) && (D1[1] > D2[1]) && (D1[2] == D2[2])) {//se sono due maggiori
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 2;
-                    } else if ((D1[0] == D2[0]) && (D1[1] > D2[1]) &&
-                               (D1[2] > D2[2])) {//se sono due maggiori variante 1
+                        printf("\nil giocatore %s perde due truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=2;
+                    } else if ((D1[0] == D2[0]) && (D1[1] > D2[1]) &&(D1[2] > D2[2])) {//se sono due maggiori variante 1
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 2;
-                    } else if ((D1[0] > D2[0]) && (D1[1] == D2[1]) &&
-                               (D1[2] > D2[2])) {//se sono due maggiori variante 2
+                        printf("\nil giocatore %s perde due truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=2;
+                    } else if ((D1[0] > D2[0]) && (D1[1] == D2[1]) &&(D1[2] > D2[2])) {//se sono due maggiori variante 2
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 2;
-                    } else if ((D1[0] < D2[0]) && (D1[1] == D2[1]) &&
-                               (D1[2] > D2[2])) {//se uno e maggiore e uno e minore
+                        printf("\nil giocatore %s perde due truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=2;
+                    } else if ((D1[0] < D2[0]) && (D1[1] == D2[1]) &&(D1[2] > D2[2])) {//se uno e maggiore e uno e minore
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 1;
-                    } else if ((D1[0] < D2[0]) && (D1[1] > D2[1]) &&
-                               (D1[2] == D2[2])) {//se uno e maggiore e uno e minore variante 1
+                        printf("\nil giocatore %s perde una truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
+                    } else if ((D1[0] < D2[0]) && (D1[1] > D2[1]) &&(D1[2] == D2[2])) {//se uno e maggiore e uno e minore variante 1
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 1;
-                    } else if ((D1[0] > D2[0]) && (D1[1] == D2[1]) &&
-                               (D1[2] < D2[2])) {//se uno e maggiore e uno e minore variante 2
+                        printf("\nil giocatore %s perde una truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
+                    } else if ((D1[0] > D2[0]) && (D1[1] == D2[1]) &&(D1[2] < D2[2])) {//se uno e maggiore e uno e minore variante 2
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 1;
-                    } else if ((D1[0] > D2[0]) && (D1[1] < D2[1]) &&
-                               (D1[2] == D2[2])) {//se uno e maggiore e uno e minore variante 3
+                        printf("\nil giocatore %s perde una truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
+                    } else if ((D1[0] > D2[0]) && (D1[1] < D2[1])&&(D1[2] == D2[2])) {//se uno e maggiore e uno e minore variante 3
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 1;
-                    } else if ((D1[0] == D2[0]) && (D1[1] < D2[1]) &&
-                               (D1[2] > D2[2])) {//se uno e maggiore e uno e minore variante 4
+                        printf("\nil giocatore %s perde una truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
+                    } else if ((D1[0] == D2[0]) && (D1[1] < D2[1]) &&(D1[2] > D2[2])) {//se uno e maggiore e uno e minore variante 4
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 1;
-                    } else if ((D1[0] == D2[0]) && (D1[1] > D2[1]) &&
-                               (D1[2] < D2[2])) {//se uno e maggiore e uno e minore variante 5
+                        printf("\nil giocatore %s perde una truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
+                    } else if ((D1[0] == D2[0]) && (D1[1] > D2[1]) &&(D1[2] < D2[2])) {//se uno e maggiore e uno e minore variante 5
                         T[sceltaT].Armate = T[sceltaT].Armate - 1;
+                        printf("\nil giocatore %s perde una truppa\n",G[a].Nome);//stampo il messaggio a i giocatori
+                        G[a].numero_truppe-=1;
                         T[sceltaT1].Armate = T[sceltaT1].Armate - 1;
+                        printf("\nil giocatore %s perde una truppe\n",G[k].Nome);//stampo il messaggio a i giocatori
+                        G[k].numero_truppe-=1;
                     }
                     break;//istruzione di fine blocco
             }
@@ -944,27 +2065,35 @@ int attacco(int a,
 
 
 void spostamento_truppe(int a, struct tabellone *T) {
-    giocatore *G;
     int i, b;//variabile che mi serve per il for
     int scelta, sceltaB, sceltaC;
     //devo stampare tutti i territori che ha il giocatore per poi spostare le truppe
-    for (i = 0; i < 28; i++) {//dovrebbe permettere di stampare tutti i terreni relativi al utente con lo stesso id
+    for (i = 0; i < 25; i++) {//dovrebbe permettere di stampare tutti i terreni relativi al utente con lo stesso id
         if (T[i].Proprietario == G[a].ID) {
-            printf("%d)%s", i, T[i].nome);//stampa in sucessione tutti i terreni appartenenti alla stessa persona
-            printf("%d", T[i].Armate);
+            printf("\n%d)%s\n", i, T[i].nome);//stampa in sucessione tutti i terreni appartenenti alla stessa persona
+            printf("\n armate presenti al interno %d\n", T[i].Armate);
         }
     }//fine for
     printf("seleziona in base al numero il terreno dove vuoi che le truppe siano levate");
     scanf("%d", &scelta);//prendo in ingresso da tastiera
     getchar();//mi serve per evitare che prenda il valore del invio e mi vada a riempire le prossime variabili a scelta
     for (i = 0; i < 26; i++) {
-        if (isAdjacent(scelta, i) == true) {
-            printf("puoi spostarle nei seguenti territori adicenti");
-            printf("%d)%s", i, T[i].nome);
-
+        if(T[i].Proprietario==G[a].ID) {//scorre i terreni e controlla se il proprietario li possiede
+            if (isAdjacent(scelta, i) == true) {//controlla se ci sono dei terreni vicini
+                printf("puoi spostarle nei seguenti territori adicenti");//stampa il messaggio
+                printf("\n%d)%s\n", i, T[i].nome);//stampa il nome del terreno
+                printf("\ntruppe presenti al interno del territorio:%d\n",T[i].Armate);
+            }
         }
     }
     printf("scelgli dove spostare le tue truppe");
+    for (i = 0; i < 26; i++) {
+        if(T[i].Proprietario==G[a].ID) {//scorre i terreni e controlla se il proprietario li possiede
+            if (isAdjacent(scelta, i) == true) {//controlla se ci sono dei terreni vicini
+                printf("\n%d)%s\n", i, T[i].nome);//stampa il nome del terreno
+            }
+        }
+    }
     scanf("%d", &sceltaB);//prendo in ingresso da tastiera
     getchar();//mi serve per evitare che prenda il valore del invio e mi vada a riempire le prossime variabili a scelta
     do {//mi permette di rimandare la scelta del terreno se il gioccatore la scelgie sbagliata
@@ -980,7 +2109,7 @@ void spostamento_truppe(int a, struct tabellone *T) {
                 } else {
                     printf("hai sbagliato inserendo il numero delle truppe da spostare riprova");
                 }
-            } while (-1);
+            } while (1);
             break;
         } else {
             printf("hai sbagliato iserendo il numero del territorio ");
@@ -990,7 +2119,7 @@ void spostamento_truppe(int a, struct tabellone *T) {
 
 
 
-void visualizza(struct Lista *a) {
+void visualizza(struct Lista *a) {//mi serve solo in progettazione
     printf("\npuntalista----->");
     while (a != NULL) {
         printf("%d\n", a->m.Numero);
@@ -1002,4 +2131,137 @@ void visualizza(struct Lista *a) {
     }
     printf("NULL\n\n");
 
+}//fine funzione di visualizzazione
+//per adesso come ho sistemato questa funzione va molto bene pero devo ancora spenderci ancora un po di tempo perche nondevo ancora andare a prendere tutti i nomi dei terreni ed i loro rispettivi proprietari
+void salvataggio(int i,struct tabellone *T){//funzione per il salvataggio
+    struct salvataggio *salva=NULL;
+    salva=(struct salvataggio*)malloc(sizeof(struct salvataggio));
+    int a=i,k;//variabile che mi serve per prendere in considerazione il giocatore
+    FILE *fp = NULL;//assegno al puntatore il valore null per evitare che venga utilizzato da altri
+    fp=fopen("salvataggio.txt","w");//nome del file che uso per il salvataggio e anche come deve essere salvato
+    switch(GIOCATORI){
+        case 3:
+            salva->nGiocatori=GIOCATORI;
+            strcpy(salva->GIOCATORE[0].Nome,G[0].Nome);
+            salva->GIOCATORE[0].numCarte=G[0].Ncarte;
+            salva->GIOCATORE[0].col=G[0].Colore;
+            strcpy(salva->GIOCATORE[1].Nome,G[1].Nome);
+            salva->GIOCATORE[1].numCarte=G[1].Ncarte;
+            salva->GIOCATORE[1].col=G[1].Colore;
+            strcpy(salva->GIOCATORE[2].Nome,G[2].Nome);
+            salva->GIOCATORE[2].numCarte=G[2].Ncarte;
+            salva->GIOCATORE[2].col=G[2].Colore;
+            fwrite(salva,sizeof(struct salvataggio),1,fp);
+            break;
+        case 4:
+            salva->nGiocatori=GIOCATORI;
+            strcpy(salva->GIOCATORE[0].Nome,G[0].Nome);
+            salva->GIOCATORE[0].numCarte=G[0].Ncarte;
+            salva->GIOCATORE[0].col=G[0].Colore;
+            strcpy(salva->GIOCATORE[1].Nome,G[1].Nome);
+            salva->GIOCATORE[1].numCarte=G[1].Ncarte;
+            salva->GIOCATORE[1].col=G[1].Colore;
+            strcpy(salva->GIOCATORE[2].Nome,G[2].Nome);
+            salva->GIOCATORE[2].numCarte=G[2].Ncarte;
+            salva->GIOCATORE[2].col=G[2].Colore;
+            strcpy(salva->GIOCATORE[3].Nome,G[3].Nome);
+            salva->GIOCATORE[3].numCarte=G[3].Ncarte;
+            salva->GIOCATORE[3].col=G[3].Colore;
+            fwrite(salva,sizeof(struct salvataggio),1,fp);
+            break;
+        case 5:
+            salva->nGiocatori=GIOCATORI;
+            strcpy(salva->GIOCATORE[0].Nome,G[0].Nome);
+            salva->GIOCATORE[0].numCarte=G[0].Ncarte;
+            salva->GIOCATORE[0].col=G[0].Colore;
+            strcpy(salva->GIOCATORE[1].Nome,G[1].Nome);
+            salva->GIOCATORE[1].numCarte=G[1].Ncarte;
+            salva->GIOCATORE[1].col=G[1].Colore;
+            strcpy(salva->GIOCATORE[2].Nome,G[2].Nome);
+            salva->GIOCATORE[2].numCarte=G[2].Ncarte;
+            salva->GIOCATORE[2].col=G[2].Colore;
+            strcpy(salva->GIOCATORE[3].Nome,G[3].Nome);
+            salva->GIOCATORE[3].numCarte=G[3].Ncarte;
+            salva->GIOCATORE[3].col=G[3].Colore;
+            strcpy(salva->GIOCATORE[4].Nome,G[4].Nome);
+            salva->GIOCATORE[4].numCarte=G[4].Ncarte;
+            salva->GIOCATORE[4].col=G[4].Colore;
+            fwrite(salva,sizeof(struct salvataggio),1,fp);
+            break;
+        case 6:
+            salva->nGiocatori=GIOCATORI;
+            strcpy(salva->GIOCATORE[0].Nome,G[0].Nome);
+            salva->GIOCATORE[0].numCarte=G[0].Ncarte;
+            salva->GIOCATORE[0].col=G[0].Colore;
+            strcpy(salva->GIOCATORE[1].Nome,G[1].Nome);
+            salva->GIOCATORE[1].numCarte=G[1].Ncarte;
+            salva->GIOCATORE[1].col=G[1].Colore;
+            strcpy(salva->GIOCATORE[2].Nome,G[2].Nome);
+            salva->GIOCATORE[2].numCarte=G[2].Ncarte;
+            salva->GIOCATORE[2].col=G[2].Colore;
+            strcpy(salva->GIOCATORE[3].Nome,G[3].Nome);
+            salva->GIOCATORE[3].numCarte=G[3].Ncarte;
+            salva->GIOCATORE[3].col=G[3].Colore;
+            strcpy(salva->GIOCATORE[4].Nome,G[4].Nome);
+            salva->GIOCATORE[4].numCarte=G[4].Ncarte;
+            salva->GIOCATORE[4].col=G[4].Colore;
+            strcpy(salva->GIOCATORE[5].Nome,G[5].Nome);
+            salva->GIOCATORE[5].numCarte=G[5].Ncarte;
+            salva->GIOCATORE[5].col=G[5].Colore;
+            fwrite(salva,sizeof(struct salvataggio),1,fp);
+            break;
+    }
+    /*for(k=0;k!=GIOCATORI;k++) {//mando un for a contare tutti i giocatori che ci sono al interno del gioco
+        fprintf(fp, "Nome Giocatore:\t ");//stampa sul file il messaggio
+        fprintf(fp, "%s\n", G[k].Nome);//scrittura del giocatore al interno del file
+        fprintf(fp, "\tcolore truppe:\t");
+        if (G[k].Colore == 0) {//se il colore e questo
+            fprintf(fp, "ROSSO\n");//stampo il messaggio sul file
+        } else if (G[k].Colore == 1) {//se il colore e questo
+            fprintf(fp,"NERO\n");//dovrebbe salvare il valore tra le virgolette che in questo caso e il colore assegnato alla truppa
+        } else if (G[k].Colore == 2) {//se il colore e questo
+            fprintf(fp, "VIOLA\n");//mi permette di salvare il valore che viene assegnato al giocatore come colore
+        } else if (G[k].Colore == 3) {//se il colore e questo
+            fprintf(fp, "VERDE\n");//mi permette di salvare il valore che viene assegnato al giocatore come colore
+        } else if (G[k].Colore == 4) {//se il colore e questo
+            fprintf(fp, "GIALLO\n");//mi permette di salvare il valore che viene assegnato al giocatore come colore
+        } else if (G[k].Colore == 5) {//se il colore e questo
+            fprintf(fp, "BLU\n");//mi permette di salvare il valore che viene assegnato al giocatore come colore
+        }//fine if a cascata
+        fprintf(fp,"\tNumero carte: %d\n",G[k].Ncarte);
+        fprintf(fp, "\telenco carte:  ");//stampa il messaggio al interno del file
+        //sostituire questo for tramite un do while
+        if(G[k].Ncarte!=0){
+        for(a=0;a<27;k++){//prende il valore delle carte al interno di questo for per poi rimandarle in stampa al interno del file
+
+            if (DECK[a].ID == G[k].ID) {
+                fprintf(fp, "\t%d\t",DECK[k].NCARTA);//stampa il numero della carta al interno del file
+            }
+            //fwrite(G[a].Ncarte, sizeof(giocatore), 1, fp);//ci stampa il numero di carte del giocatore
+        }
+        }else{
+            fprintf(fp,"nessuna carta\n");//stampa sul file nessuna carta
+        }
+        for(a=0;a<26;a++){
+            fprintf(fp,"ID:%d\n",T[a].Vterritorio);
+            fprintf(fp,"Armate");
+        }
+    }
+     */
+        fclose(fp);//chiudo il file in scrittura
+        //devo creare la funzione perscacarte per salvare le carte in un array
+
+
+}//fine della funzione di salvataggio
+struct Lista *aggiungi_elementi(struct Lista *MAZZO){
+    struct Lista *pxt=NULL;
+    pxt=(struct Lista *)malloc(sizeof(struct Lista));
+    pxt->m=M[26];
+    pxt->pnext=MAZZO;
+    MAZZO=pxt;
+    pxt=(struct Lista *)malloc(sizeof(struct Lista));
+    pxt->m=M[27];
+    pxt->pnext=MAZZO;
+    MAZZO=pxt;
+    return MAZZO;
 }
