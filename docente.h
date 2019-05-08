@@ -10,7 +10,7 @@
 //inizio definizioni
 #define N_TERRITORI 26 //Number of territories
 #define DIM 26//questa ci definisce la grandezza massima che possiamo dare a i nomi
-#define GIOCATORI 3 //come chiesto nell progetto base creare una macro con il valore dei giocatori
+#define GIOCATORI 6 //come chiesto nell progetto base creare una macro con il valore dei giocatori
 //fine definizioni
 //inizio prototipi di funzione
 _Bool isAdjacent(int idFirst, int idSecond);
@@ -35,7 +35,7 @@ struct Lista *Pesca(int,int,struct Lista*);//questa funzione permette di pescare
 struct tabellone *fase_pre_gioco(int ,struct Lista *);//questo prototipo di funzione mi fa mettere le truppe al interno dei territori prima della partita edeve farmeli mettere massimo 3 alla volta
 struct tabellone *Proprietario(struct tabellone *,int);//mi serve per dare il valore del proprietario al terreno
 int Fase_principale(int ,struct tabellone *,struct Lista *);//questa e la fase principale del gioco
-int attacco(int,struct tabellone*);//questa funzione esegue tutta la fase d'attacco
+void attacco(int,struct tabellone*);//questa funzione esegue tutta la fase d'attacco
 void truppe(int );//questa funzione aumenta il numero delle truppe del giocatore fino ad arrivare al numero massimo consentito
 void spostamento_truppe(int ,struct tabellone *);//qusta funzione mi permette di avere lo spostamento tra le truppe
 void gioca();//mi da il valore dei giocatori e mi serviva solo in fase di debug per vedere se la creazione dei giocatori era corretta
@@ -44,6 +44,6 @@ void visualizza(struct Lista *);//visualizza le carte
 void tabelloneVIS(struct tabellone *);//visualizza le informazioni relative a i giocatori
 struct  Lista *aggiungi_elementi(struct Lista *);//questa funzione mi permette di inserire le ultime due carte al interno della lista
 void salvataggio(int ,struct tabellone*);
-
+void carica();
 //fine prototipi di funzione
 #endif

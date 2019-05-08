@@ -132,26 +132,40 @@ mazzo M[28] = {{0,0,  vino,  studi_umanistici,          "Psicologia"},
                {26,0, jolly, nullo,                     "jolly"},
                {27,0, jolly, nullo,                     "jolly"}};
 
-typedef struct {
-    enum colore col;//richiamo l'enumerazione del colore
-    int numCarte;//il numero di carte che ha il giocatore
-    char Nome[DIM+1];//array che contiene il nome
-}GIOCsalvataggio;
 
-struct salvataggio {//questa struttura serve solo per il salvataggio
-    int nGiocatori;//numero dei giocatori al momento del salvataggio
-    int IDgiocatoreGiocante;//numero identificativo del giocatore
-    GIOCsalvataggio GIOCATORE[GIOCATORI];//richiamo alla struttura giocatore
-    int Vcarte[27];//vettore carte
-    struct tabellone TABELLONE;//richiamo alla struttura tabellone
-    mazzo MAZZO;//richiamo alla struttura mazzo
-};//fine struttura salvataggio
+
 
 
 struct Lista {//creazione della struttura lista
     mazzo m;//dichiaro un vettore della struttura mazzo di 26 spazzi
     struct Lista *pnext;//puntatore al prossimo elemento della lista
 };
+struct Smaz{
+    int nCarte;
+    int vet[27];
+};
+typedef struct{
+    char Nome[DIM+1];
+    int Carmate;
+    int Ncarte;
+}GSAV;
+
+struct savtab{
+    int id;
+    int idp;
+    int armate;
+};
+struct savT{
+    struct savtab tab[26];
+};
+typedef struct {
+    int nGiocatore;
+    int IDGiocatore;
+    GSAV Giocatore[GIOCATORI];//un blocco per ogni giocatore
+    int vat[28];
+    struct savT Ta;
+    struct Smaz maz;
+}Salvataggio;
 
 //********************fine parte del codice relativo a strutture e enumerazioni*************************************//
 /******porzione di codice relativa al lancio dei dadi*******/
@@ -1612,15 +1626,22 @@ int Fase_principale(int random,struct tabellone *T,struct Lista *MAZZO) {//quest
     }//fine for
 }//fine funzione principale
 
-int attacco(int a,struct tabellone *T) {//questo è la funzione per l'attacco prende in ingresso il vettore giocatori piu il numero del attaccante e del difensore
-    int scelta, sceltaD, sceltaT, sceltaT1, i=0, j=0,k;//variabili che mi  servono al interno della
+void attacco(int a,struct tabellone *T) {//questo è la funzione per l'attacco prende in ingresso il vettore giocatori piu il numero del attaccante e del difensore
+    int scelta, sceltaD, sceltaT=0, sceltaT1=0, i=0, j=0,k;//variabili che mi  servono al interno della
     int D1[3], D2[3], D3; //dadi attacco, difesa ausiliari
+    int alfa,vettore[25];
     printf("\n%s\n",G[a].Nome);//stampa il nome a video
     printf("\nscegli da quale dei tuoi terreni attaccare\n");
     //sto provando a cambiare la selezione dei territori da attaccare al posto di un for sto mettendo un do-while in modo che mi faccia vedere tutti i terreni
+    for(alfa=0;alfa<25;alfa++){
+        vettore[alfa]=0;//sto inizializzando il valore al interno del vettore a zero
+    }
+    i=0;
     do{
         if(T[j].Proprietario == G[a].ID){//
             printf("\n%d)%s\n", j, T[j].nome);//stampo tutti i nomi dei territori che hanno in comune l'id con il proprietario
+            vettore[i]=j;
+            i++;
         }
         j++;//aumento la variabile j per arrivare alla fine del array dei terreni
     }while(j<25);//controlla se j è diverso da 25 quando arriva a 25 si ferma
@@ -1630,10 +1651,23 @@ int attacco(int a,struct tabellone *T) {//questo è la funzione per l'attacco pr
             printf("%d)%s", i, T[i].nome);
         }
     }*/
-
-    do {//questo controlla se ci sono abbastanza truppe per poter attaccare il teritorio altrimenti viene visualizzato un messaggio di errore e che non possiamo attaccare da quel terreno
+    i=0;
+    do {
         scanf("%d", &sceltaT);
-        if (T[sceltaT].Armate == 1) {
+        do {
+            if(vettore[i]!=sceltaT){
+                if(i==25){
+                    printf("hai inserito un valore sbagliato riprova");
+                    attacco(a,T);//richiamo la funzione per poter reinserire il valore da zero con tutti i terreni che lo compongono
+                    break;//sto mettendo questa interruzione per levarmi un sospetto
+                }
+                i++;
+            }else{
+                break;
+            }
+
+        }while(-1);
+        if (T[sceltaT].Armate == 1) {//questo controlla se ci sono abbastanza truppe per poter attaccare il teritorio altrimenti viene visualizzato un messaggio di errore e che non possiamo attaccare da quel terreno
             printf("\nnon puoi attaccare da questo territorio");
         } else {
             break;
@@ -1648,6 +1682,7 @@ int attacco(int a,struct tabellone *T) {//questo è la funzione per l'attacco pr
             }
         }
     }
+    //io qua sto ancora
 
     do {
         scanf("%d", &sceltaT1);
@@ -1655,10 +1690,17 @@ int attacco(int a,struct tabellone *T) {//questo è la funzione per l'attacco pr
             printf("\nstai attaccando %s\n", T[sceltaT1].nome);
             break;//termina il flusso uscendo dal do in modo che il while messo a -1 non continui a ciclare al infinito
         } else {
-            printf("\nhai sbagliato inserendo il numero del territorio da attaccare\n");
-            printf("\nil terreno che hai selto non è nelle vicinanze del tuo\n");
-        }
 
+            printf("\nhai sbagliato inserendo il numero del territorio da attaccare\n");
+            printf("\nil terreno che hai selto non e' nelle vicinanze del tuo\n");
+            for (i = 0; i < 25; i++) {
+                if(isAdjacent(sceltaT, i) == true){
+                    if(T[i].Proprietario!=G[a].ID){
+                        printf("\n%d)%s\n", i,T[i].nome);
+                    }
+                }
+            }
+        }
     } while (-1);
     printf("scelgli con quante truppe attaccare il massimo e tre");
     scanf("%d", &scelta);
@@ -2067,6 +2109,8 @@ int attacco(int a,struct tabellone *T) {//questo è la funzione per l'attacco pr
 void spostamento_truppe(int a, struct tabellone *T) {
     int i, b;//variabile che mi serve per il for
     int scelta, sceltaB, sceltaC;
+    char let;
+
     //devo stampare tutti i territori che ha il giocatore per poi spostare le truppe
     for (i = 0; i < 25; i++) {//dovrebbe permettere di stampare tutti i terreni relativi al utente con lo stesso id
         if (T[i].Proprietario == G[a].ID) {
@@ -2086,28 +2130,29 @@ void spostamento_truppe(int a, struct tabellone *T) {
             }
         }
     }
-    printf("scelgli dove spostare le tue truppe");
-    for (i = 0; i < 26; i++) {
-        if(T[i].Proprietario==G[a].ID) {//scorre i terreni e controlla se il proprietario li possiede
-            if (isAdjacent(scelta, i) == true) {//controlla se ci sono dei terreni vicini
-                printf("\n%d)%s\n", i, T[i].nome);//stampa il nome del terreno
-            }
-        }
-    }
-    scanf("%d", &sceltaB);//prendo in ingresso da tastiera
-    getchar();//mi serve per evitare che prenda il valore del invio e mi vada a riempire le prossime variabili a scelta
+
     do {//mi permette di rimandare la scelta del terreno se il gioccatore la scelgie sbagliata
+        scanf("%d", &sceltaB);//prendo in ingresso da tastiera
+        getchar();//mi serve per evitare che prenda il valore del invio e mi vada a riempire le prossime variabili a scelta
         if (isAdjacent(scelta, sceltaB) == true) {
-            printf("nel terreno a tua scelta ci sono %d truppe", T[i].Armate);
+            printf("nel terreno a tua scelta ci sono %d truppe", T[sceltaB].Armate);
             printf("quante truppe vuoi spostare dal altro terreno ");
             scanf("%d", &sceltaC);
             do {//questo do mi permette di rimandare dinuovo la scelta delle truppe se risulta sbagliata
-                if (T[scelta].Armate > sceltaC) {
+                if (sceltaC < T[scelta].Armate) {
                     T[scelta].Armate = T[scelta].Armate - sceltaC;
                     T[sceltaB].Armate = T[sceltaB].Armate + sceltaC;
                     break;
                 } else {
                     printf("hai sbagliato inserendo il numero delle truppe da spostare riprova");
+                    printf("vuoi annullare??");
+                    printf("Y/N");
+                    scanf("%s",&let);
+                    if((scelta=='Y')||(scelta=='y')) {
+                        break;
+                    }else{
+                        printf("riprova;");
+                    }
                 }
             } while (1);
             break;
@@ -2133,126 +2178,19 @@ void visualizza(struct Lista *a) {//mi serve solo in progettazione
 
 }//fine funzione di visualizzazione
 //per adesso come ho sistemato questa funzione va molto bene pero devo ancora spenderci ancora un po di tempo perche nondevo ancora andare a prendere tutti i nomi dei terreni ed i loro rispettivi proprietari
-void salvataggio(int i,struct tabellone *T){//funzione per il salvataggio
-    struct salvataggio *salva=NULL;
-    salva=(struct salvataggio*)malloc(sizeof(struct salvataggio));
-    int a=i,k;//variabile che mi serve per prendere in considerazione il giocatore
-    FILE *fp = NULL;//assegno al puntatore il valore null per evitare che venga utilizzato da altri
-    fp=fopen("salvataggio.txt","w");//nome del file che uso per il salvataggio e anche come deve essere salvato
-    switch(GIOCATORI){
-        case 3:
-            salva->nGiocatori=GIOCATORI;
-            strcpy(salva->GIOCATORE[0].Nome,G[0].Nome);
-            salva->GIOCATORE[0].numCarte=G[0].Ncarte;
-            salva->GIOCATORE[0].col=G[0].Colore;
-            strcpy(salva->GIOCATORE[1].Nome,G[1].Nome);
-            salva->GIOCATORE[1].numCarte=G[1].Ncarte;
-            salva->GIOCATORE[1].col=G[1].Colore;
-            strcpy(salva->GIOCATORE[2].Nome,G[2].Nome);
-            salva->GIOCATORE[2].numCarte=G[2].Ncarte;
-            salva->GIOCATORE[2].col=G[2].Colore;
-            fwrite(salva,sizeof(struct salvataggio),1,fp);
-            break;
-        case 4:
-            salva->nGiocatori=GIOCATORI;
-            strcpy(salva->GIOCATORE[0].Nome,G[0].Nome);
-            salva->GIOCATORE[0].numCarte=G[0].Ncarte;
-            salva->GIOCATORE[0].col=G[0].Colore;
-            strcpy(salva->GIOCATORE[1].Nome,G[1].Nome);
-            salva->GIOCATORE[1].numCarte=G[1].Ncarte;
-            salva->GIOCATORE[1].col=G[1].Colore;
-            strcpy(salva->GIOCATORE[2].Nome,G[2].Nome);
-            salva->GIOCATORE[2].numCarte=G[2].Ncarte;
-            salva->GIOCATORE[2].col=G[2].Colore;
-            strcpy(salva->GIOCATORE[3].Nome,G[3].Nome);
-            salva->GIOCATORE[3].numCarte=G[3].Ncarte;
-            salva->GIOCATORE[3].col=G[3].Colore;
-            fwrite(salva,sizeof(struct salvataggio),1,fp);
-            break;
-        case 5:
-            salva->nGiocatori=GIOCATORI;
-            strcpy(salva->GIOCATORE[0].Nome,G[0].Nome);
-            salva->GIOCATORE[0].numCarte=G[0].Ncarte;
-            salva->GIOCATORE[0].col=G[0].Colore;
-            strcpy(salva->GIOCATORE[1].Nome,G[1].Nome);
-            salva->GIOCATORE[1].numCarte=G[1].Ncarte;
-            salva->GIOCATORE[1].col=G[1].Colore;
-            strcpy(salva->GIOCATORE[2].Nome,G[2].Nome);
-            salva->GIOCATORE[2].numCarte=G[2].Ncarte;
-            salva->GIOCATORE[2].col=G[2].Colore;
-            strcpy(salva->GIOCATORE[3].Nome,G[3].Nome);
-            salva->GIOCATORE[3].numCarte=G[3].Ncarte;
-            salva->GIOCATORE[3].col=G[3].Colore;
-            strcpy(salva->GIOCATORE[4].Nome,G[4].Nome);
-            salva->GIOCATORE[4].numCarte=G[4].Ncarte;
-            salva->GIOCATORE[4].col=G[4].Colore;
-            fwrite(salva,sizeof(struct salvataggio),1,fp);
-            break;
-        case 6:
-            salva->nGiocatori=GIOCATORI;
-            strcpy(salva->GIOCATORE[0].Nome,G[0].Nome);
-            salva->GIOCATORE[0].numCarte=G[0].Ncarte;
-            salva->GIOCATORE[0].col=G[0].Colore;
-            strcpy(salva->GIOCATORE[1].Nome,G[1].Nome);
-            salva->GIOCATORE[1].numCarte=G[1].Ncarte;
-            salva->GIOCATORE[1].col=G[1].Colore;
-            strcpy(salva->GIOCATORE[2].Nome,G[2].Nome);
-            salva->GIOCATORE[2].numCarte=G[2].Ncarte;
-            salva->GIOCATORE[2].col=G[2].Colore;
-            strcpy(salva->GIOCATORE[3].Nome,G[3].Nome);
-            salva->GIOCATORE[3].numCarte=G[3].Ncarte;
-            salva->GIOCATORE[3].col=G[3].Colore;
-            strcpy(salva->GIOCATORE[4].Nome,G[4].Nome);
-            salva->GIOCATORE[4].numCarte=G[4].Ncarte;
-            salva->GIOCATORE[4].col=G[4].Colore;
-            strcpy(salva->GIOCATORE[5].Nome,G[5].Nome);
-            salva->GIOCATORE[5].numCarte=G[5].Ncarte;
-            salva->GIOCATORE[5].col=G[5].Colore;
-            fwrite(salva,sizeof(struct salvataggio),1,fp);
-            break;
-    }
-    /*for(k=0;k!=GIOCATORI;k++) {//mando un for a contare tutti i giocatori che ci sono al interno del gioco
-        fprintf(fp, "Nome Giocatore:\t ");//stampa sul file il messaggio
-        fprintf(fp, "%s\n", G[k].Nome);//scrittura del giocatore al interno del file
-        fprintf(fp, "\tcolore truppe:\t");
-        if (G[k].Colore == 0) {//se il colore e questo
-            fprintf(fp, "ROSSO\n");//stampo il messaggio sul file
-        } else if (G[k].Colore == 1) {//se il colore e questo
-            fprintf(fp,"NERO\n");//dovrebbe salvare il valore tra le virgolette che in questo caso e il colore assegnato alla truppa
-        } else if (G[k].Colore == 2) {//se il colore e questo
-            fprintf(fp, "VIOLA\n");//mi permette di salvare il valore che viene assegnato al giocatore come colore
-        } else if (G[k].Colore == 3) {//se il colore e questo
-            fprintf(fp, "VERDE\n");//mi permette di salvare il valore che viene assegnato al giocatore come colore
-        } else if (G[k].Colore == 4) {//se il colore e questo
-            fprintf(fp, "GIALLO\n");//mi permette di salvare il valore che viene assegnato al giocatore come colore
-        } else if (G[k].Colore == 5) {//se il colore e questo
-            fprintf(fp, "BLU\n");//mi permette di salvare il valore che viene assegnato al giocatore come colore
-        }//fine if a cascata
-        fprintf(fp,"\tNumero carte: %d\n",G[k].Ncarte);
-        fprintf(fp, "\telenco carte:  ");//stampa il messaggio al interno del file
-        //sostituire questo for tramite un do while
-        if(G[k].Ncarte!=0){
-        for(a=0;a<27;k++){//prende il valore delle carte al interno di questo for per poi rimandarle in stampa al interno del file
 
-            if (DECK[a].ID == G[k].ID) {
-                fprintf(fp, "\t%d\t",DECK[k].NCARTA);//stampa il numero della carta al interno del file
-            }
-            //fwrite(G[a].Ncarte, sizeof(giocatore), 1, fp);//ci stampa il numero di carte del giocatore
-        }
-        }else{
-            fprintf(fp,"nessuna carta\n");//stampa sul file nessuna carta
-        }
-        for(a=0;a<26;a++){
-            fprintf(fp,"ID:%d\n",T[a].Vterritorio);
-            fprintf(fp,"Armate");
-        }
-    }
-     */
-        fclose(fp);//chiudo il file in scrittura
+void salvataggio(int i,struct tabellone *T) {//funzione per il salvataggio
+    Salvataggio salva;
+    int a, k,j;//variabile che mi serve per prendere in considerazione il giocatore
+    FILE *fp = NULL;//assegno al puntatore il valore null per evitare che venga utilizzato da altri
+    fp = fopen("salvataggio.rsk", "wb");//nome del file che uso per il salvataggio e anche come deve essere salvato
+    fwrite(&salva, sizeof(Salvataggio),1, fp);
+    fclose(fp);//chiudo il file in scrittura
         //devo creare la funzione perscacarte per salvare le carte in un array
 
-
 }//fine della funzione di salvataggio
+
+
 struct Lista *aggiungi_elementi(struct Lista *MAZZO){
     struct Lista *pxt=NULL;
     pxt=(struct Lista *)malloc(sizeof(struct Lista));
@@ -2265,3 +2203,14 @@ struct Lista *aggiungi_elementi(struct Lista *MAZZO){
     MAZZO=pxt;
     return MAZZO;
 }
+void carica(){//mi serve per capire se alla fine mi va a buon fine
+    Salvataggio salva;
+    int a;
+    FILE*fp=NULL;//creo il puntatore del file da zero
+    fp=fopen("salvataggio.rsk","r+b");
+            fread(&salva, sizeof(Salvataggio), 1, fp);
+            printf("%d",salva);
+            printf("%s %d %d ",salva.Giocatore);
+
+    fclose(fp);
+        }
